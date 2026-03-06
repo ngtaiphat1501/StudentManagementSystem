@@ -32,12 +32,6 @@ public class Student extends Person {
     }
     
     
-    
-    @Override
-    public void displayInfo() {
-        
-    }
-    
     // them khoa hoc
     public void  addRegisteredCourse(Course couse){
         registeredCourses.add(couse);
@@ -206,12 +200,28 @@ public class Student extends Person {
     public void setAddress(String address) {
         this.address = address;
     }
+    @Override
+    public void displayInfo() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         
-        
-        
+        System.out.println("┌─────────────────────────────────────────────────────────────┐");
+        System.out.println("│                   THÔNG TIN SINH VIÊN                       │");
+        System.out.println("├─────────────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-20s: %-40s │\n", "Mã sinh viên", studentId);
+        System.out.printf("│ %-20s: %-40s │\n", "Họ và tên", fullName);
+        System.out.printf("│ %-20s: %-40s │\n", "Ngày sinh", sdf.format(birthDate));
+        System.out.printf("│ %-20s: %-40s │\n", "Giới tính", gender);
+        System.out.printf("│ %-20s: %-40s │\n", "Lớp", classId);
+        System.out.printf("│ %-20s: %-40s │\n", "Ngày nhập học", sdf.format(enrollmentDate));
+        System.out.printf("│ %-20s: %-40s │\n", "Trạng thái", status);
+        System.out.printf("│ %-20s: %-40.2f │\n", "GPA", gpa);
+        System.out.printf("│ %-20s: %-40.1f │\n", "Điểm rèn luyện", trainingScore);
+        System.out.printf("│ %-20s: %-40s │\n", "Xếp loại", ranking);
+        System.out.printf("│ %-20s: %-40s │\n", "Email", email);
+        System.out.printf("│ %-20s: %-40s │\n", "SĐT", phone);
+        System.out.printf("│ %-20s: %-40s │\n", "Địa chỉ", address);
+        System.out.println("└─────────────────────────────────────────────────────────────┘");
+    }
     
-        
-    
-    
-    
+   
 }

@@ -8,10 +8,7 @@ package com.studentmanagement.models;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- *
- * @author TUF GAMING
- */
+
 public class Course {
    private String courseId;        // Format: CT101
     private String courseName;

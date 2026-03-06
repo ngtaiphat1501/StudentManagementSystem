@@ -108,9 +108,4 @@ public class TraningScore implements Serializable{
     }
     
     
-    
-    
-    
-    
-    
 }

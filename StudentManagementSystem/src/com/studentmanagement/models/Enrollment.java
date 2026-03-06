@@ -5,10 +5,7 @@
  */
 package com.studentmanagement.models;
 
-/**
- *
- * @author TUF GAMING
- */
+
 public class Enrollment {
     
 }

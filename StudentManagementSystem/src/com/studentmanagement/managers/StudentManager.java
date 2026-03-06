@@ -1,6 +1,6 @@
 
 package com.studentmanagement.managers;
 
-public StudentManager {
+public class StudentManager {
    
 }
