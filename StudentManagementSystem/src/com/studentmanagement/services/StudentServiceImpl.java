@@ -115,7 +115,7 @@ public class StudentServiceImpl implements StudentService {
             
             
         }catch(Exception e){
-             System.out.println("❌ Lỗi khi thêm sinh viên: " + e.getMessage());
+             System.out.println(" Lỗi khi thêm sinh viên: " + e.getMessage());
             
         }
 }
@@ -124,7 +124,7 @@ public class StudentServiceImpl implements StudentService {
     public void updateStudent(String studentId, Scanner scanner) {
       Student  student = findStudentByStudentId(studentId);
        if (student == null) {
-            System.out.println("❌ Không tìm thấy sinh viên với mã: " + studentId);
+            System.out.println(" Không tìm thấy sinh viên với mã: " + studentId);
             return;
         }
         System.out.println("\n╔══════════════════════════════════════════════╗");
