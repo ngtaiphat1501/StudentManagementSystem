@@ -98,8 +98,7 @@ public class Course {
         this.prerequisites = prerequisites;
     }
 
-    public void setMaxStudents(int maxStudents) {
-        this.maxStudents = maxStudents;
+    public void setMaxStudents(int maxStudents) {this.maxStudents = maxStudents;
     }
 
     public void setCurrentStudents(int currentStudents) {
