@@ -1,38 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.studentmanagement.models;
 
+import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Course {
-   private String courseId;        // Format: CT101
-    private String courseName;
-    private int credits;            // 1-5 tín chỉ
-    private String departmentId;    // Mã khoa phụ trách
-    private int semester;           // Học kỳ (1, 2, 3...)
-    private List<String> prerequisites; //Danh sách mã môn học tiên quyết
-    private int maxStudents;        // Số sinh viên tối đa
+public class Course implements Serializable {
     
-    // Thuộc tính bổ sung để xử lý logic
-    private int currentStudents;    // Số sinh viên đã đăng ký hiện tại
-    private Grade grade;            // Lưu điểm của môn học này (để tương thích với class Student của bạn)
+    // Đánh dấu phiên bản để lưu file không bị lỗi
+    private static final long serialVersionUID = 1L;
 
-    // Constructor đầy đủ
-    public Course(String courseId, String courseName, int credits, String departmentId, int semester, List<String> prerequisites, int maxStudents, int currentStudents, Grade grade) {
+    // --- CÁC THUỘC TÍNH (Theo đúng sơ đồ) ---
+    private String courseId;        // Mã môn học
+    private String courseName;      // Tên môn học
+    private int credits;            // Số tín chỉ
+    private String departmentId;    // Mã khoa
+    private int semester;           // Học kỳ (kiểu int theo sơ đồ)
+    private String academicYear;    // Năm học
+    private String teacher;         // Giảng viên
+    private Grade grade;            // Điểm số của môn học (liên kết với class Grade)
+
+    // --- CONSTRUCTORS ---
+    
+    // Constructor rỗng (Rất cần thiết khi đọc/ghi file hoặc dùng v��i các framework)
+    public Course() {
+    }
+
+    // Constructor có tham số (Không bao gồm Grade vì điểm thường được cập nhật sau)
+    public Course(String courseId, String courseName, int credits, String departmentId, 
+                  int semester, String academicYear, String teacher) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.credits = credits;
         this.departmentId = departmentId;
         this.semester = semester;
-        this.prerequisites = prerequisites;
-        this.maxStudents = maxStudents;
-        this.currentStudents = currentStudents;
-        this.grade = grade;
+        this.academicYear = academicYear;
+        this.teacher = teacher;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getCourseId() {
@@ -55,16 +59,12 @@ public class Course {
         return semester;
     }
 
-    public List<String> getPrerequisites() {
-        return prerequisites;
+    public String getAcademicYear() {
+        return academicYear;
     }
 
-    public int getMaxStudents() {
-        return maxStudents;
-    }
-
-    public int getCurrentStudents() {
-        return currentStudents;
+    public String getTeacher() {
+        return teacher;
     }
 
     public Grade getGrade() {
@@ -91,67 +91,35 @@ public class Course {
         this.semester = semester;
     }
 
-    public void setPrerequisites(List<String> prerequisites) {
-        this.prerequisites = prerequisites;
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
     }
 
-    public void setMaxStudents(int maxStudents) {this.maxStudents = maxStudents;
-    }
-
-    public void setCurrentStudents(int currentStudents) {
-        this.currentStudents = currentStudents;
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
     
-     // Đăng ký môn học
-    public boolean registerCourse() {
-        if (getAvailableSeats() > 0) {
-            currentStudents++;
-            return true; // Đăng ký thành công
-        }
-        return false; // Hết chỗ
+
+    // --- CÁC PHƯƠNG THỨC (Theo đúng sơ đồ) ---
+
+    // Hàm mô phỏng việc đăng ký môn học
+    public void register() {
+        System.out.println("Đang xử lý đăng ký môn học: " + this.courseName + " (" + this.courseId + ")");
     }
-    // Hủy đăng ký môn học (bổ sung thêm để logic hoàn thiện)
-    public boolean cancelRegistration() {
-        if (currentStudents > 0) {
-            currentStudents--;
-            return true;
-        }
-        return false;
-    }
-    //Kiểm tra xem còn chỗ trống không
-    public int getAvailableSeats() {
-        return maxStudents - currentStudents;
-    }
-      // Kiểm tra điều kiện tiên quyết (truyền vào danh sách các môn SV đã học qua)
-    public boolean checkPrerequisites(List<String> completedCourseIds) {
-        if (prerequisites == null || prerequisites.isEmpty()) {
-            return true; // Không có môn tiên quyết -> đủ điều kiện
-        }
-        // Kiểm tra xem SV đã học tất cả các môn tiên quyết chưa
-        return completedCourseIds.containsAll(prerequisites);
-    }
-     // Lấy thông tin môn học (In ra Console)
-    public void getCourseInfo() {
-        System.out.println("┌─────────────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-15s: %-42s │\n", "Mã môn học", courseId);
-        System.out.printf("│ %-15s: %-42s │\n", "Tên môn học", courseName);
-        System.out.printf("│ %-15s: %-42d │\n", "Số tín chỉ", credits);
-        System.out.printf("│ %-15s: %-42s │\n", "Khoa phụ trách", departmentId);
-        System.out.printf("│ %-15s: %-42d │\n", "Học kỳ", semester);
-        System.out.printf("│ %-15s: %-42d │\n", "Sĩ số tối đa", maxStudents);
-        System.out.printf("│ %-15s: %-42d │\n", "Chỗ còn trống", getAvailableSeats());   
-        String preReqStr = prerequisites.isEmpty() ? "Không có" : String.join(", ", prerequisites);
-        System.out.printf("│ %-15s: %-42s │\n", "Môn tiên quyết", preReqStr);
-        System.out.println("└─────────────────────────────────────────────────────────────┘");
-    }
-     // Thêm môn tiên quyết
-    public void addPrerequisite(String courseId) {
-        if (!this.prerequisites.contains(courseId)) {
-            this.prerequisites.add(courseId);
-        }
+
+    // Hàm hiển thị thông tin môn học
+    public void displayInfo() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Mã môn học : " + this.courseId);
+        System.out.println("Tên môn học: " + this.courseName);
+        System.out.println("Số tín chỉ : " + this.credits);
+        System.out.println("Mã khoa    : " + this.departmentId);
+        System.out.println("Học kỳ     : " + this.semester + " | Năm học: " + this.academicYear);
+        System.out.println("Giảng viên : " + this.teacher);
+        System.out.println("--------------------------------------------------");
     }
 }
