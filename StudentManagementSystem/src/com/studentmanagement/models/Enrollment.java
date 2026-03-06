@@ -1,115 +1,80 @@
+//Nhan
 package com.studentmanagement.models;
 
 import java.io.Serializable;
-import java.util.Date; // Thêm thư viện Date để xử lý ngày tháng
+import java.util.Date;
 
 public class Enrollment implements Serializable {
+    private int enrollmentId;
+    private String studentId;
+    private String courseId;
+    private String semester;
+    private String academicYear;
+    private Date registrationDate;
+    private String status; // "Đã đăng ký", "Đã hủy", "Hoàn thành"
     
-    // Đánh dấu phiên bản để lưu file không bị lỗi
-    private static final long serialVersionUID = 1L;
-
-    // --- CÁC THUỘC TÍNH (Theo đúng sơ đồ) ---
-    private int enrollmentId;           // Mã đăng ký (kiểu int)
-    private String studentId;           // Mã sinh viên
-    private String courseId;            // Mã môn học
-    private String semester;            // Học kỳ
-    private String academicYear;        // Năm học
-    private Date registrationDate;      // Ngày đăng ký
-    private String status;              // Trạng thái (VD: "Đã đăng ký", "Đã hủy", "Đã hoàn thành")
-
-    // --- CONSTRUCTORS ---
-    
-    // Constructor rỗng (Bắt buộc phải có khi dùng Serializable)
-    public Enrollment() {
-    }
-
-    // Constructor đầy đủ tham số
-    public Enrollment(int enrollmentId, String studentId, String courseId, String semester, 
-                      String academicYear) {
+    public Enrollment(int enrollmentId, String studentId, String courseId, 
+                     String semester, String academicYear) {
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.semester = semester;
         this.academicYear = academicYear;
+        this.registrationDate = new Date();
+        this.status = "Đã đăng ký";
     }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public int getEnrollmentId() {
-        return enrollmentId;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public String getAcademicYear() {
-        return academicYear;
-    }
-
-    public Date getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setEnrollmentId(int enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-    public void setAcademicYear(String academicYear) {
-        this.academicYear = academicYear;
-    }
-
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    // --- CÁC PHƯƠNG THỨC NGHIỆP VỤ (Theo đúng sơ đồ) ---
-
+    
     // Đăng ký môn học
     public void register() {
-        this.status = "Đã đăng ký";
-        System.out.println("Sinh viên [" + this.studentId + "] đã ĐĂNG KÝ môn [" + this.courseId + "] thành công.");
+        status = "Đã đăng ký";
+        System.out.println("Đăng ký môn học thành công!");
     }
-
-    // Hủy môn học
+    
+    // Hủy đăng ký
     public void dropCourse() {
-        this.status = "Đã hủy";
-        System.out.println("Sinh viên [" + this.studentId + "] đã HỦY môn [" + this.courseId + "].");
+        status = "Đã hủy";
+        System.out.println("Đã hủy đăng ký môn học!");
     }
-
-    // Đánh dấu hoàn thành môn học
+    
+    // Đánh dấu hoàn thành
     public void markCompleted() {
-        this.status = "Đã hoàn thành";
-        System.out.println("Sinh viên [" + this.studentId + "] đã HOÀN THÀNH môn [" + this.courseId + "].");
+        status = "Hoàn thành";
     }
+    
+    // Hiển thị thông tin đăng ký
+    public void displayEnrollmentInfo() {
+        System.out.println("┌─────────────────────────────────────────────────────┐");
+        System.out.println("│                THÔNG TIN ĐĂNG KÝ                    │");
+        System.out.println("├─────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-15s: %-35s │\n", "Mã đăng ký", enrollmentId);
+        System.out.printf("│ %-15s: %-35s │\n", "Mã sinh viên", studentId);
+        System.out.printf("│ %-15s: %-35s │\n", "Mã môn học", courseId);
+        System.out.printf("│ %-15s: %-35s │\n", "Học kỳ", semester);
+        System.out.printf("│ %-15s: %-35s │\n", "Năm học", academicYear);
+        System.out.printf("│ %-15s: %-35s │\n", "Trạng thái", status);
+        System.out.printf("│ %-15s: %-35s │\n", "Ngày đăng ký", registrationDate);
+        System.out.println("└─────────────────────────────────────────────────────┘");
+    }
+    
+    // Getter và Setter
+    public int getEnrollmentId() { return enrollmentId; }
+    public void setEnrollmentId(int enrollmentId) { this.enrollmentId = enrollmentId; }
+    
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
+    
+    public String getCourseId() { return courseId; }
+    public void setCourseId(String courseId) { this.courseId = courseId; }
+    
+    public String getSemester() { return semester; }
+    public void setSemester(String semester) { this.semester = semester; }
+    
+    public String getAcademicYear() { return academicYear; }
+    public void setAcademicYear(String academicYear) { this.academicYear = academicYear; }
+    
+    public Date getRegistrationDate() { return registrationDate; }
+    public void setRegistrationDate(Date registrationDate) { this.registrationDate = registrationDate; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
