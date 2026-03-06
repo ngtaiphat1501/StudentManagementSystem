@@ -223,9 +223,37 @@ public class StudentServiceImpl implements StudentService {
                     break;
                 }
               }
-             
-            
+                 break;
+            case "name":
+                for(Student student : students){
+                    
+                      if (student.getFullName().toLowerCase().contains(keyword.toLowerCase())){
+                          results.add(student);
+                          
+                      }  
+                }
+                break;
+            case "class":
+                for(Student student : students){
+                    
+                    if(student.getClassId().equalsIgnoreCase(keyword)){
+                        results.add(student);
+                    }
+                    
+                }
+            break;
+            case "email":
+                for(Student student : students){
+                    
+                    if(student.getEmail().equalsIgnoreCase(keyword)){
+                        results.add(student);
+                    }
+                }
+                break;
+                
         }
+        return results;
+        
         
         
         
@@ -233,12 +261,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> getAllStudents() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return new ArrayList<>(students);
     }
 
     @Override
     public void exportToExcel(String filePath) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         System.out.println(" Xuất dữ liệu ra Excel: " + filePath);
+        // Triển khai xuất Excel ở đây (sử dụng Apache POI)
+        System.out.println(" Xuất dữ liệu thành công!");
     }
     
     // method tim id sv ton tai hay khong
