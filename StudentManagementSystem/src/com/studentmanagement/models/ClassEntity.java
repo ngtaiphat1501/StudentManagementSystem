@@ -1,4 +1,4 @@
-//(Khánh)dd
+//(Khánh)
 package com.studentmanagement.models;
 
 import java.io.Serializable;
