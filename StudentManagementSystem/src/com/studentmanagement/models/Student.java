@@ -32,12 +32,6 @@ public class Student extends Person {
     }
     
     
-    
-    @Override
-    public void displayInfo() {
-        
-    }
-    
     // them khoa hoc
     public void  addRegisteredCourse(Course couse){
         registeredCourses.add(couse);
