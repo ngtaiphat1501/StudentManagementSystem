@@ -25,14 +25,12 @@ public class Enrollment implements Serializable {
 
     // Constructor đầy đủ tham số
     public Enrollment(int enrollmentId, String studentId, String courseId, String semester, 
-                      String academicYear, Date registrationDate, String status) {
+                      String academicYear) {
         this.enrollmentId = enrollmentId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.semester = semester;
         this.academicYear = academicYear;
-        this.registrationDate = registrationDate;
-        this.status = status;
     }
 
     public static long getSerialVersionUID() {
