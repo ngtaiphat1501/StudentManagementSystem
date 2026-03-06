@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
  *
- * @author TUF GAMING
+ * @author TUF GAMING 
  */
 public class Enrollment {
     private int enrollmentId;           // Khóa chính (ID phiếu đăng ký)
