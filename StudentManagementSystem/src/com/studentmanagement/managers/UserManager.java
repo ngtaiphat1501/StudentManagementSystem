@@ -5,10 +5,29 @@
  */
 package com.studentmanagement.managers;
 
-/**
- *
- * @author TUF GAMING
- */
+import com.studentmanagement.models.User;
+import com.studentmanagement.services.FileService;
+//import com.studentmanagement.services.FileServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 public class UserManager {
+    
+    private List<User> users;
+    private User curentUser;
+    private FileService fileService;
+
+    public UserManager(){
+        this.users = new ArrayList<>();
+        this.fileService = new FileServiceImpl();
+        loadUsersFromFile();
+    }
+    
+    
+    
+    
+    
+    
+    
     
 }
