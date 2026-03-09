@@ -17,7 +17,9 @@ public class Student extends Person {
     private List<Course> registeredCourses; // list update course
     private List<Activity> activities;
 
-    public Student(String studentId, String classId, Date enrollmentDate, String status, double gpa, double trainingScore, String ranking, List<Course> registeredCourses, List<Activity> activities, String id, String fullName, Date birthDate, String gender, String phone, String email, String address) {
+   public Student(String id, String studentId, String fullName, Date birthDate, 
+                   String gender, String phone, String email, String address,
+                   String classId, Date enrollmentDate, String status) {
         super(id, fullName, birthDate, gender, phone, email, address);
         this.studentId = studentId;
         this.classId = classId;
@@ -25,8 +27,7 @@ public class Student extends Person {
         this.status = status;
         this.gpa = 0.0;
         this.trainingScore = 0.0;
-        this.ranking = ranking;
-        // chu y khuc nay
+        this.ranking = "Chưa xếp loại";
         this.registeredCourses = new ArrayList<>();
         this.activities = new ArrayList<>();
     }
