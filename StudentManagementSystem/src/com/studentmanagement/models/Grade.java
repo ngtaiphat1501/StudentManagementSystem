@@ -17,14 +17,15 @@ public class Grade implements Serializable {
     private double totalScore;
     private String letterGrade;
 
-    public Grade(int gradeId, int enrollmentId, double attendanceScore, double midtermScore, double finalScore, double totalScore, String letterGrade) {
+    public Grade(int gradeId, int enrollmentId, double attendanceScore,
+            double midtermScore, double finalScore) {
         this.gradeId = gradeId;
         this.enrollmentId = enrollmentId;
         this.attendanceScore = attendanceScore;
         this.midtermScore = midtermScore;
         this.finalScore = finalScore;
         this.totalScore = totalScore;
-        this.letterGrade = letterGrade;
+
     }
 
     public int getGradeId() {
