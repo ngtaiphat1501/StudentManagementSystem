@@ -11,10 +11,9 @@ public interface FileService {
     // 5.2. Đọc dữ liệu
     Object loadData(String fileName);
     
-    // 5.3. Xuất Excel
-    boolean exportToExcel(Object data, String filePath);
+
     
-    // 5.4. Sao lưu dữ liệu
+    // 5.3. Sao lưu dữ liệu
     boolean backupData();
     
     // Khôi phục dữ liệu
