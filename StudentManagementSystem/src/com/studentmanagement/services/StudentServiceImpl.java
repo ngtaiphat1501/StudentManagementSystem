@@ -284,7 +284,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     // method tim id sv ton tai hay khong
-    public  Student findStudentByStudentId(String studentId) {// public tạm
+    public  Student findStudentByStudentId(String studentId) {
         for (Student student : students) {
             if (student.getStudentId().equals(studentId)) {
                 return student;
