@@ -281,4 +281,22 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
     
+     public Student findStudentById(String id) {
+        for (Student student : students) {
+            if (student.getId().equals(id)) {
+                return student;
+            }
+        }
+        return null;
+    }
+     // Getter
+    public List<Student> getStudents() {
+        return students;
+    }
+    
+    // Setter
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+    
 }
