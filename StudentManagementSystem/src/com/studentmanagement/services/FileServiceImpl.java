@@ -21,14 +21,14 @@ public class FileServiceImpl implements FileService{
   @Override
     public boolean saveData(String fileName, Object data) {
         String filePath = DATA_DIR + fileName;
-        
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))){
             oos.writeObject(data);
-            System.out.println(" Đã lưu dữ liệu vào file: " + filePath);
+            System.out.println("Data da dc luu vao file : "+fileName);
             return true;
-        } catch (IOException e) {
-            System.out.println(" Lỗi khi lưu file " + fileName + ": " + e.getMessage());
+        }catch(IOException e){
+             System.out.println("Lỗi khi lưu file " + fileName + ": " + e.getMessage());
             return false;
+            
         }
  }
 
@@ -37,29 +37,35 @@ public class FileServiceImpl implements FileService{
         String filePath = DATA_DIR + fileName;
         File file = new File(filePath);
         
-        if (!file.exists()) {
-            System.out.println(" File " + fileName + " chưa tồn tại");
+        if(!file.exists()){
+            System.out.println("File : "+fileName+" Khong ton tai");
+            return null;
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))){
+            Object data = ois.readObject();
+            System.out.println("Đã tải dữ liệu từ file: " + fileName);
+            return data;
+            
+            
+        }catch(IOException | ClassNotFoundException e ){
+            System.out.println("Lỗi khi đọc file " + fileName + ": " + e.getMessage());
             return null;
         }
         
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-            Object data = ois.readObject();
-            System.out.println(" Đã tải dữ liệu từ file: " + fileName);
-            return data;
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println(" Lỗi khi đọc file " + fileName + ": " + e.getMessage());
-            return null;
-        }
     }
-
-    @Override
-    public boolean exportToExcel(Object data, String filePath) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+ 
     @Override
     public boolean backupData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+      String timestamp = sdf.format(new Date());
+      String backupFile = BACKUP_DIR +"   backup_"+timestamp+".zip";
+      try(){
+          FileOutputStream fos = new FileOutputStream(backupFile);
+          ZipOutputStream zos = new ZipOutputStream(fos);
+          
+      }catch(){
+          
+      }
     }
 
     @Override
