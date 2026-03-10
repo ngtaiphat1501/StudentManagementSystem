@@ -12,13 +12,13 @@ public class TraningScore implements Serializable{
     private double totalScore;
     private String ranking;
 
-    public TraningScore(int scoreId, String studentId, String academicYear, int semester, double totalScore, String ranking) {
+    public TraningScore(int scoreId, String studentId, String academicYear, int semester, double totalScore) {
         this.scoreId = scoreId;
         this.studentId = studentId;
         this.academicYear = academicYear;
         this.semester = semester;
         this.totalScore = totalScore;
-        this.ranking = ranking;
+        
     }
     // tinh diem ren luyen
     public void calculateScore(double activityPoint){

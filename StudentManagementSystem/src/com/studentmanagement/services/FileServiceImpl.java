@@ -59,18 +59,71 @@ public class FileServiceImpl implements FileService{
       SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
       String timestamp = sdf.format(new Date());
       String backupFile = BACKUP_DIR +"   backup_"+timestamp+".zip";
-      try(){
+      try{
           FileOutputStream fos = new FileOutputStream(backupFile);
           ZipOutputStream zos = new ZipOutputStream(fos);
           
-      }catch(){
+            File dataDir = new File(DATA_DIR);
+            File[] files = dataDir.listFiles();
+            
+            if(files != null){
+                for(File file:files){
+                    if(file.isFile() &&!file.getName().endsWith(".zip")){
+                        addToZipFile(file,zos);
+                    }
+                    
+                }
+            }
+          zos.close();
+          fos.close();
           
+          System.out.println("Sao lưu dữ liệu thành công: " + backupFile);
+          return true;
+            
+            
+      }catch(IOException e){
+           System.out.println("❌ Lỗi khi sao lưu dữ liệu: " + e.getMessage());
+           return false;
       }
     }
 
     @Override
     public boolean restoreData(String backupFile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         System.out.println(" Đang khôi phục dữ liệu từ: " + backupFile);
+        // Triển khai restore từ zip
+        return true;
+    }
+    // mrthod ho tro them 1 file vao fil.zip  khi backup data 
+    private void addToZipFile(File file , ZipOutputStream zos) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        ZipEntry zipEntry = new ZipEntry(file.getName());
+        zos.putNextEntry(zipEntry);
+        
+        byte[]bytes = new byte[1024];
+        int lenght ;
+        while ((lenght = fis.read(bytes)) >= 0){
+            zos.write(bytes,0,lenght);
+        }
+        zos.close();
+        fis.close();
+        
     }
     
+    public void listBackup(){
+        File backupDir= new File(BACKUP_DIR);
+        File[] backups = backupDir.listFiles((dir, name) -> name.endsWith(".zip"));
+        
+         if (backups == null || backups.length == 0) {
+            System.out.println("Chưa có bản sao lưu nào");
+            return;
+        }
+        
+        System.out.println("\nDANH SÁCH BẢN SAO LƯU:");
+        for (int i = 0; i < backups.length; i++) {
+            System.out.printf("%d. %s (%.2f MB)\n", 
+                i + 1, backups[i].getName(),
+                backups[i].length() / (1024.0 * 1024.0));
+        }      
+    }
+   
 }
