@@ -1,14 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// Tai
 package com.studentmanagement.services;
 
-/**
- *
- * @author TUF GAMING
- */
-public class FileService {
+import java.io.*;
+import java.util.List;
+
+public interface FileService {
+    // 5.1. Lưu dữ liệu
+    boolean saveData(String fileName, Object data);
     
+    // 5.2. Đọc dữ liệu
+    Object loadData(String fileName);
+    
+
+    
+    // 5.3. Sao lưu dữ liệu
+    boolean backupData();
+    
+    // Khôi phục dữ liệu
+    boolean restoreData(String backupFile);
 }

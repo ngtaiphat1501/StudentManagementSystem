@@ -1,4 +1,4 @@
-//Nhan
+//Nhans
 package com.studentmanagement.models;
 
 import java.io.Serializable;

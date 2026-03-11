@@ -19,7 +19,7 @@ import java.util.Date;
     private double pointEarned;
     private String status;
 
-    public Activity(int activityId, String studentId, String activityType, String activityName, String organization, Date starDate, Date endDate, int hourSpent, double pointEarned, String status) {
+    public Activity(int activityId, String studentId, String activityType, String activityName, String organization, Date starDate, Date endDate) {
         this.activityId = activityId;
         this.studentId = studentId;
         this.activityType = activityType;
