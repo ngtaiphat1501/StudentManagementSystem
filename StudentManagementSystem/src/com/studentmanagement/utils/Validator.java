@@ -12,9 +12,9 @@ public class Validator {
     private static final Pattern PHONE_PATTERN = 
         Pattern.compile("^(0|\\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$");
     
-    // Student ID pattern (SV + 8 số)
+    // Student ID pattern (CE + 6 số)
     private static final Pattern STUDENT_ID_PATTERN = 
-        Pattern.compile("^SV\\d{8}$");
+        Pattern.compile("^CE\\d{6}$");
     
     public static boolean isValidEmail(String email) {
         return email != null && EMAIL_PATTERN.matcher(email).matches();

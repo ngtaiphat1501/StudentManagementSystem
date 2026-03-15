@@ -1,4 +1,3 @@
-// Tai 
 package com.studentmanagement.models;
 
 import java.text.SimpleDateFormat;
@@ -14,10 +13,10 @@ public class Student extends Person {
     private double gpa;
     private double trainingScore;
     private String ranking; // Xếp loại rèn luyện
-    private List<Course> registeredCourses; // list update course
+    private List<Course> registeredCourses;
     private List<Activity> activities;
 
-   public Student(String id, String studentId, String fullName, Date birthDate, 
+    public Student(String id, String studentId, String fullName, Date birthDate,
                    String gender, String phone, String email, String address,
                    String classId, Date enrollmentDate, String status) {
         super(id, fullName, birthDate, gender, phone, email, address);
@@ -31,180 +30,78 @@ public class Student extends Person {
         this.registeredCourses = new ArrayList<>();
         this.activities = new ArrayList<>();
     }
-    
-    
-    // them khoa hoc
-    public void  addRegisteredCourse(Course couse){
-        registeredCourses.add(couse);
+
+    public void addRegisteredCourse(Course course) {
+        registeredCourses.add(course);
+        calculateGPA(); // tự động tính lại GPA khi thêm khóa học
     }
-    
-    //them hoat dong
-    public void addActivity(Activity activity){
-       activities.add(activity);
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+        calculateTrainingScore(); // tự động tính lại điểm rèn luyện
     }
-    // tinh gpa 
-    public void calculateGPA(){
-     if(registeredCourses.isEmpty()){
-         gpa=0.0;
-         return;
-     }else{
-        double totalWeightedScore =0; //tong diem * tin chi
-        int totalCredits = 0; // tong so tin chi
-         for (Course course : registeredCourses) {
-            if (course.getGrade() != null) {
-                totalWeightedScore += course.getGrade().getTotalScore() * course.getCredits();
+
+    public void calculateGPA() {
+        if (registeredCourses.isEmpty()) {
+            gpa = 0.0;
+            return;
+        }
+        double totalWeightedScore = 0;
+        int totalCredits = 0;
+        for (Course course : registeredCourses) {
+            Grade grade = course.getGrade();
+            if (grade != null) {
+                totalWeightedScore += grade.getTotalScore() * course.getCredits();
                 totalCredits += course.getCredits();
             }
         }
-        
         if (totalCredits > 0) {
             gpa = totalWeightedScore / totalCredits;
+        } else {
+            gpa = 0.0;
         }
-         
-    }
-   }
-     //tinh diem ren luyenj
-     public void calculateTranningScore(){
-         double totalPoints = 0;
-         for(Activity activity : activities){
-             
-             
-         }
-         
-         
-     }
-
-    public String getStudentId() {
-        return studentId;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void calculateTrainingScore() {
+        double total = 0;
+        for (Activity act : activities) {
+            total += act.getPointEarned();
+        }
+        this.trainingScore = Math.min(total, 100); // tối đa 100
+        updateRanking();
     }
 
-    public String getClassId() {
-        return classId;
+    private void updateRanking() {
+        if (trainingScore >= 90) ranking = "Xuất sắc";
+        else if (trainingScore >= 80) ranking = "Tốt";
+        else if (trainingScore >= 65) ranking = "Khá";
+        else if (trainingScore >= 50) ranking = "Trung bình";
+        else ranking = "Yếu";
     }
 
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
+    // Getter và Setter
+    public String getStudentId() { return studentId; }
+    public void setStudentId(String studentId) { this.studentId = studentId; }
+    public String getClassId() { return classId; }
+    public void setClassId(String classId) { this.classId = classId; }
+    public Date getEnrollmentDate() { return enrollmentDate; }
+    public void setEnrollmentDate(Date enrollmentDate) { this.enrollmentDate = enrollmentDate; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public double getGpa() { return gpa; }
+    public void setGpa(double gpa) { this.gpa = gpa; }
+    public double getTrainingScore() { return trainingScore; }
+    public void setTrainingScore(double trainingScore) { this.trainingScore = trainingScore; }
+    public String getRanking() { return ranking; }
+    public void setRanking(String ranking) { this.ranking = ranking; }
+    public List<Course> getRegisteredCourses() { return registeredCourses; }
+    public void setRegisteredCourses(List<Course> registeredCourses) { this.registeredCourses = registeredCourses; }
+    public List<Activity> getActivities() { return activities; }
+    public void setActivities(List<Activity> activities) { this.activities = activities; }
 
-    public Date getEnrollmentDate() {
-        return enrollmentDate;
-    }
-
-    public void setEnrollmentDate(Date enrollmentDate) {
-        this.enrollmentDate = enrollmentDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public double getGpa() {
-        return gpa;
-    }
-
-    public void setGpa(double gpa) {
-        this.gpa = gpa;
-    }
-
-    public double getTrainingScore() {
-        return trainingScore;
-    }
-
-    public void setTrainingScore(double trainingScore) {
-        this.trainingScore = trainingScore;
-    }
-
-    public String getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(String ranking) {
-        this.ranking = ranking;
-    }
-
-    public List<Course> getRegisteredCourses() {
-        return registeredCourses;
-    }
-
-    public void setRegisteredCourses(List<Course> registeredCourses) {
-        this.registeredCourses = registeredCourses;
-    }
-
-    public List<Activity> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
     @Override
     public void displayInfo() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        
         System.out.println("┌─────────────────────────────────────────────────────────────┐");
         System.out.println("│                   THÔNG TIN SINH VIÊN                       │");
         System.out.println("├─────────────────────────────────────────────────────────────┤");
@@ -223,5 +120,4 @@ public class Student extends Person {
         System.out.printf("│ %-20s: %-40s │\n", "Địa chỉ", address);
         System.out.println("└─────────────────────────────────────────────────────────────┘");
     }
-    
 }

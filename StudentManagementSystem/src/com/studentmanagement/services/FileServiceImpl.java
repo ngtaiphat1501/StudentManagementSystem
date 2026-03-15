@@ -58,7 +58,7 @@ public class FileServiceImpl implements FileService{
     public boolean backupData() {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
       String timestamp = sdf.format(new Date());
-      String backupFile = BACKUP_DIR +"   backup_"+timestamp+".zip";
+      String backupFile = BACKUP_DIR + "backup_" + timestamp + ".zip";
       try{
           FileOutputStream fos = new FileOutputStream(backupFile);
           ZipOutputStream zos = new ZipOutputStream(fos);
@@ -93,6 +93,7 @@ public class FileServiceImpl implements FileService{
         // Triển khai restore từ zip
         return true;
     }
+
     // mrthod ho tro them 1 file vao fil.zip  khi backup data 
     private void addToZipFile(File file , ZipOutputStream zos) throws IOException {
         FileInputStream fis = new FileInputStream(file);
@@ -100,11 +101,12 @@ public class FileServiceImpl implements FileService{
         zos.putNextEntry(zipEntry);
         
         byte[]bytes = new byte[1024];
-        int lenght ;
-        while ((lenght = fis.read(bytes)) >= 0){
-            zos.write(bytes,0,lenght);
+        int length ;
+        while ((length = fis.read(bytes)) >= 0){
+            zos.write(bytes,0,length);
         }
-        zos.close();
+        
+        zos.closeEntry();   // sửa lỗi: không đóng zip mà chỉ đóng entry
         fis.close();
         
     }
