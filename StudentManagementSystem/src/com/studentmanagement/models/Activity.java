@@ -17,7 +17,7 @@ public class Activity implements Serializable {
     private String status; // "Hoàn thành", "Đang tham gia", "Hủy"
 
     public Activity(int activityId, String studentId, String activityType, String activityName,
-                    String organization, Date startDate, Date endDate, int hourSpent, String status) {
+                    String organization, Date startDate, Date endDate) {
         this.activityId = activityId;
         this.studentId = studentId;
         this.activityType = activityType;
@@ -25,8 +25,7 @@ public class Activity implements Serializable {
         this.organization = organization;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.hourSpent = hourSpent;
-        this.status = status;
+      
         calculateTrainingScore(); // tự tính điểm dựa trên giờ
     }
 
