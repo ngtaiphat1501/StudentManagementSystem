@@ -10,12 +10,12 @@ public class TrainingScore implements Serializable {
     private double totalScore;
     private String ranking;
 
-    public TrainingScore(int scoreId, String studentId, String academicYear, int semester, double totalScore) {
+    public TrainingScore(int scoreId, String studentId, String academicYear, int semester) {
         this.scoreId = scoreId;
         this.studentId = studentId;
         this.academicYear = academicYear;
         this.semester = semester;
-        this.totalScore = totalScore;
+       
         classifyRanking();
     }
 
