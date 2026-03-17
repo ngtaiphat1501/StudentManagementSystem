@@ -7,7 +7,7 @@ package com.studentmanagement.services;
 
 import com.studentmanagement.models.Activity;
 import com.studentmanagement.models.Student;
-import com.studentmanagement.models.TraningScore;
+import com.studentmanagement.models.TrainingScore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
 
     private List<Activity> activities;
-    private List<TraningScore> trainingScores;
+    private List<TrainingScore> trainingScores;
     private StudentService studentService;
     private int nextActivityId = 1;
     private int nextScoreId = 1;
@@ -36,11 +36,11 @@ public class ActivityServiceImpl implements ActivityService {
         this.activities = activities;
     }
 
-    public List<TraningScore> getTrainingScores() {
+    public List<TrainingScore> getTrainingScores() {
         return trainingScores;
     }
 
-    public void setTrainingScores(List<TraningScore> trainingScores) {
+    public void setTrainingScores(List<TrainingScore> trainingScores) {
         this.trainingScores = trainingScores;
     }
 
@@ -74,8 +74,8 @@ public class ActivityServiceImpl implements ActivityService {
         activities.add(new Activity(nextActivityId++, "ce200968", "The Thao", "World Cup", "Việt Nam", new Date(), new Date()));
         activities.add(new Activity(nextActivityId++, "ce200968", "Hoc Thuat", "Code cùng bạn", "Tổ chức FCODER", new Date(), new Date()));
 
-        trainingScores.add(new TraningScore(nextScoreId++, "ce200698", "2026", 1));
-        trainingScores.add(new TraningScore(nextScoreId++, "ce200699", "2026", 1));
+        trainingScores.add(new TrainingScore(nextScoreId++, "ce200698", "2026", 1));
+        trainingScores.add(new TrainingScore(nextScoreId++, "ce200699", "2026", 1));
     }
 
     // thêm hoạt động
@@ -91,7 +91,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         activities.add(activity);
         activity.setHourSpent(hourSpent);
-        activity.setStarDate(startDate);
+        activity.setStartDate(startDate);
         activity.setEndDate(endDate);
         System.out.print("Đã hoàn thành");
 
@@ -120,11 +120,11 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         // Cập nhật điểm rèn luyện cho sinh viên
-        student.calculateTranningScore();
+        student.calculateTrainingScore();
         // Cập nhật hoặc tạo TrainingScore
-        TraningScore score = findTrainingScore(studentId, "2023-2024", 1);
+        TrainingScore score = findTrainingScore(studentId, "2023-2024", 1);
         if (score == null) {
-            score = new TraningScore(nextScoreId++, studentId, "2023-2024", 1);
+            score = new TrainingScore(nextScoreId++, studentId, "2023-2024", 1);
             trainingScores.add(score);
         }
         score.calculateScore(totalPoints);
@@ -134,7 +134,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public String classifyTrainingRanking(String studentId) {
-        TraningScore score = findTrainingScore(studentId, "2023-2024", 1);
+        TrainingScore score = findTrainingScore(studentId, "2023-2024", 1);
         if (score == null) {
             return "Chưa xếp loại";
         }
@@ -173,7 +173,7 @@ public class ActivityServiceImpl implements ActivityService {
 
         // Thống kê xếp loại
         int excellent = 0, good = 0, average = 0, weak = 0;
-        for (TraningScore score : trainingScores) {
+        for (TrainingScore score : trainingScores) {
             switch (score.getRanking()) {
                 case "Xuất sắc":
                     excellent++;
@@ -201,8 +201,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     // tìm kiếm điểm rèn luyện
-    public TraningScore findTrainingScore(String studentId, String academicYear, int semester) {
-        for (TraningScore score : trainingScores) {
+    public TrainingScore findTrainingScore(String studentId, String academicYear, int semester) {
+        for (TrainingScore score : trainingScores) {
             if (score.getStudentId().equals(studentId)) {
                 if (score.getAcademicYear().equals(academicYear)) {
                     if (score.getSemester() == semester) {
