@@ -1,4 +1,3 @@
-// Khanh
 package com.studentmanagement.managers;
 
 import com.studentmanagement.models.User;
@@ -10,12 +9,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Manages user accounts including login, password change, and user CRUD operations
+ */
 public class UserManager {
 
     private List<User> users;
     private User currentUser;
     private FileService fileService;
 
+    /**
+     * Constructor - loads users from file and creates default accounts if needed
+     */
     public UserManager() {
         this.users = new ArrayList<>();
         this.fileService = new FileServiceImpl();
@@ -26,6 +31,9 @@ public class UserManager {
         }
     }
 
+    /**
+     * Loads users from data file and removes duplicates
+     */
     public void loadUsersFromFile() {
         Object data = fileService.loadData("users.dat");
         if (data instanceof List) {
@@ -55,6 +63,9 @@ public class UserManager {
         }
     }
 
+    /**
+     * Creates default user accounts for different roles
+     */
     public void createDefaultAccounts() {
         boolean hasAdmin = false, hasStaff = false, hasTeacher = false, hasStudent = false;
         
@@ -76,10 +87,19 @@ public class UserManager {
         }
     }
 
+    /**
+     * Saves users to data file
+     */
     public void saveUserToFile() {
         fileService.saveData("users.dat", users);
     }
 
+    /**
+     * Authenticates a user with username and password
+     * @param username Username
+     * @param password Password
+     * @return true if login successful, false otherwise
+     */
     public boolean login(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.checkPassword(password)) {
@@ -92,6 +112,9 @@ public class UserManager {
         return false;
     }
     
+    /**
+     * Logs out the current user
+     */
     public void logout() {
         if (currentUser != null) {
             System.out.println("👋 Logged out user " + currentUser.getFullName());
@@ -99,6 +122,10 @@ public class UserManager {
         }
     }
 
+    /**
+     * Changes password for the current user
+     * @param scanner Scanner for user input
+     */
     public void changePassword(Scanner scanner) {
         if (currentUser == null) {
             System.out.println("❌ Not logged in");
@@ -129,26 +156,50 @@ public class UserManager {
         System.out.println("✅ Password changed successfully");
     }
 
+    /**
+     * Gets the currently logged-in user
+     * @return Current user or null if not logged in
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Checks if current user is admin
+     * @return true if admin, false otherwise
+     */
     public boolean isAdmin() {
         return currentUser != null && currentUser.isAdmin();
     }
 
+    /**
+     * Checks if current user is student
+     * @return true if student, false otherwise
+     */
     public boolean isStudent() {
         return currentUser != null && currentUser.isStudent();
     }
 
+    /**
+     * Checks if current user is staff
+     * @return true if staff, false otherwise
+     */
     public boolean isStaff() {
         return currentUser != null && currentUser.isStaff();
     }
 
+    /**
+     * Checks if current user is teacher
+     * @return true if teacher, false otherwise
+     */
     public boolean isTeacher() {
         return currentUser != null && currentUser.isTeacher();
     }
 
+    /**
+     * Gets the list of all users
+     * @return List of users
+     */
     public List<User> getUsers() {
         return users;
     }

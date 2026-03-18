@@ -1,5 +1,8 @@
 package com.studentmanagement.utils;
 
+/**
+ * Constants used throughout the application
+ */
 public class Constants {
     
     // File paths

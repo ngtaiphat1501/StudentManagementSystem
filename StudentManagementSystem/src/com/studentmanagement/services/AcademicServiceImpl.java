@@ -1,4 +1,3 @@
-// Khanh
 package com.studentmanagement.services;
 
 import com.studentmanagement.models.Course;
@@ -9,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author TUF GAMING
+ * Implementation of AcademicService for academic operations
  */
 public class AcademicServiceImpl implements AcademicService {
 
@@ -21,6 +19,13 @@ public class AcademicServiceImpl implements AcademicService {
     private int nextEnrollmentId = 1;
     private int nextGradeId = 1;
 
+    /**
+     * Constructor for AcademicServiceImpl
+     * @param courses List of courses
+     * @param enrollments List of enrollments
+     * @param grades List of grades
+     * @param studentService Student service instance
+     */
     public AcademicServiceImpl(List<Course> courses, List<Enrollment> enrollments, List<Grade> grades, StudentService studentService) {
         this.courses = courses;
         this.enrollments = enrollments != null ? enrollments : new ArrayList<>();
@@ -76,6 +81,9 @@ public class AcademicServiceImpl implements AcademicService {
         this.nextGradeId = nextGradeId;
     }
 
+    /**
+     * Initializes sample academic data
+     */
     public void initializeSampleData() {
         courses.add(new Course("PRO192", "Object Oriented Programming", 3, "SE", 2, "2026", "Mr.Son"));
         courses.add(new Course("NWC202", "Computer Networking", 3, "IT", 3, "2026", "Mr.Minh"));
@@ -94,20 +102,20 @@ public class AcademicServiceImpl implements AcademicService {
         // Check if student exists
         Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
         if (student == null) {
-            System.out.println("❌ Student not found: " + studentId);
+            System.out.println(" Student not found: " + studentId);
             return false;
         }
 
         // Check if course exists
         Course course = findCourseByCourseId(courseId);
         if (course == null) {
-            System.out.println("❌ Course not found: " + courseId);
+            System.out.println(" Course not found: " + courseId);
             return false;
         }
 
         // Check if already registered
         if (isAlreadyRegistered(studentId, courseId, semester)) {
-            System.out.println("❌ Student already registered for this course!");
+            System.out.println(" Student already registered for this course!");
             return false;
         }
 
@@ -116,7 +124,7 @@ public class AcademicServiceImpl implements AcademicService {
 
         student.addRegisteredCourse(course);
 
-        System.out.println("✅ Course registration successful!");
+        System.out.println(" Course registration successful!");
         enroll.displayEnrollmentInfo();
         return true;
     }
@@ -125,7 +133,7 @@ public class AcademicServiceImpl implements AcademicService {
     public boolean enterGrade(String studentId, String courseId, double attendance, double midterm, double finalScore) {
         Enrollment enrollment = findEnrollment(studentId, courseId);
         if (enrollment == null) {
-            System.out.println("❌ Enrollment not found...");
+            System.out.println(" Enrollment not found...");
             return false;
         }
 
@@ -150,7 +158,7 @@ public class AcademicServiceImpl implements AcademicService {
             student.calculateGPA();
         }
 
-        System.out.println("✅ Grade entry successful!");
+        System.out.println(" Grade entry successful!");
         grade.displayGradeInfo();
         return true;
     }
@@ -160,7 +168,7 @@ public class AcademicServiceImpl implements AcademicService {
         Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
 
         if (student == null) {
-            System.out.println("❌ Student not found...");
+            System.out.println(" Student not found...");
             return 0.0;
         }
 
@@ -255,6 +263,11 @@ public class AcademicServiceImpl implements AcademicService {
         }
     }
 
+    /**
+     * Finds a course by its ID
+     * @param Id Course ID to search for
+     * @return Course object if found, null otherwise
+     */
     public Course findCourseByCourseId(String Id) {
         if (Id == null || courses == null) {
             return null;
@@ -276,6 +289,11 @@ public class AcademicServiceImpl implements AcademicService {
         return null;
     }
 
+    /**
+     * Extracts course code from course name
+     * @param courseName Course name with code in parentheses
+     * @return Extracted course code
+     */
     private String extractCourseCode(String courseName) {
         if (courseName == null) {
             return "";
@@ -288,6 +306,12 @@ public class AcademicServiceImpl implements AcademicService {
         return "";
     }
 
+    /**
+     * Finds enrollment by student ID and course ID
+     * @param studentId Student ID
+     * @param courseId Course ID
+     * @return Enrollment object if found, null otherwise
+     */
     public Enrollment findEnrollment(String studentId, String courseId) {
         for (Enrollment enroll : enrollments) {
             if (enroll.getStudentId().equals(studentId) && enroll.getCourseId().equals(courseId)) {
@@ -297,6 +321,11 @@ public class AcademicServiceImpl implements AcademicService {
         return null;
     }
 
+    /**
+     * Finds grade by enrollment ID
+     * @param enrollmentId Enrollment ID
+     * @return Grade object if found, null otherwise
+     */
     public Grade findGradeByEnrollment(int enrollmentId) {
         for (Grade g : grades) {
             if (g.getEnrollmentId() == enrollmentId) {
@@ -306,6 +335,13 @@ public class AcademicServiceImpl implements AcademicService {
         return null;
     }
 
+    /**
+     * Checks if a student is already registered for a course in a semester
+     * @param studentId Student ID
+     * @param courseId Course ID
+     * @param semester Semester
+     * @return true if already registered, false otherwise
+     */
     private boolean isAlreadyRegistered(String studentId, String courseId, String semester) {
         for (Enrollment enrollment : enrollments) {
             if (enrollment.getStudentId().equals(studentId)

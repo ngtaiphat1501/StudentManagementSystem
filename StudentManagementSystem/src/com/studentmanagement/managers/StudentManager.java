@@ -10,12 +10,18 @@ import java.util.Scanner;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
+/**
+ * Manages student-related operations by delegating to StudentService
+ */
 public class StudentManager {
 
     private StudentService studentService;
     private FileService fileService;
     private List<ClassEntity> classes;
 
+    /**
+     * Constructor - initializes services and sample classes
+     */
     public StudentManager() {
         this.studentService = new StudentServiceImpl();
         this.fileService = new FileServiceImpl();
@@ -23,26 +29,45 @@ public class StudentManager {
         initializeSampleClasses();
     }
 
+    /**
+     * Gets all students from the service
+     * @return List of all students
+     */
     public List<Student> getStudents() {
         return studentService.getAllStudents();
     }
 
+    /**
+     * Creates sample class data
+     */
     private void initializeSampleClasses() {
         List<Student> students = studentService.getAllStudents();
         classes.add(new ClassEntity("K17CNTTA", "Information Technology A", "IT", "2025", "Mr. Ngach", students.size(), students));
         classes.add(new ClassEntity("K17QTKD", "Business Administration", "BA", "2025", "Mr. Tham", students.size(), students));
     }
 
+    /**
+     * Adds a new student
+     * @param scanner Scanner for user input
+     */
     public void addStudent(Scanner scanner) {
         studentService.addStudent(scanner);
     }
 
+    /**
+     * Updates an existing student
+     * @param scanner Scanner for user input
+     */
     public void updateStudent(Scanner scanner) {
         System.out.print("Enter student ID to update: ");
         String studentId = scanner.nextLine();
         studentService.updateStudent(studentId, scanner);
     }
 
+    /**
+     * Deletes a student after confirmation
+     * @param scanner Scanner for user input
+     */
     public void deleteStudent(Scanner scanner) {
         System.out.print("Enter student ID to delete: ");
         String studentId = scanner.nextLine();
@@ -68,6 +93,10 @@ public class StudentManager {
         }
     }
 
+    /**
+     * Searches for students by various criteria
+     * @param scanner Scanner for user input
+     */
     public void searchStudent(Scanner scanner) {
         System.out.println("Search by: 1-ID, 2-Name, 3-Class, 4-Email");
         System.out.print("Choose: ");
@@ -103,6 +132,9 @@ public class StudentManager {
         }
     }
 
+    /**
+     * Displays all students
+     */
     public void displayAllStudents() {
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()) {
@@ -114,10 +146,20 @@ public class StudentManager {
         }
     }
 
+    /**
+     * Finds a student by their student ID
+     * @param studentId Student ID to search for
+     * @return Student object if found, null otherwise
+     */
     public Student findStudentByStudentId(String studentId) {
         return ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
     }
     
+    /**
+     * Finds a student by email
+     * @param email Email to search for
+     * @return Student object if found, null otherwise
+     */
     public Student findStudentByEmail(String email) {
         for (Student s : studentService.getAllStudents()) {
             if (s.getEmail() != null && s.getEmail().equalsIgnoreCase(email)) {
@@ -127,6 +169,11 @@ public class StudentManager {
         return null;
     }
     
+    /**
+     * Finds a student by name (accent-insensitive)
+     * @param name Name to search for
+     * @return Student object if found, null otherwise
+     */
     public Student findStudentByName(String name) {
         String normalizedName = removeAccent(name.toLowerCase());
         for (Student s : studentService.getAllStudents()) {
@@ -138,6 +185,11 @@ public class StudentManager {
         return null;
     }
     
+    /**
+     * Removes accents from a string for accent-insensitive search
+     * @param str Input string
+     * @return String with accents removed
+     */
     private String removeAccent(String str) {
         if (str == null) return "";
         try {

@@ -1,8 +1,10 @@
-// Khanh
 package com.studentmanagement.models;
 
 import java.io.Serializable;
 
+/**
+ * Represents a system user account with authentication and role information
+ */
 public class User implements Serializable  {
     private String username;
     private String password;
@@ -10,6 +12,14 @@ public class User implements Serializable  {
     private String fullName;
     private String email;
 
+    /**
+     * Constructor for User
+     * @param username Username for login
+     * @param password Password
+     * @param role User role (ADMIN/STAFF/TEACHER/STUDENT)
+     * @param fullName Full name
+     * @param email Email address
+     */
     public User(String username, String password, String role, String fullName, String email) {
         this.username = username;
         this.password = password;
@@ -18,20 +28,43 @@ public class User implements Serializable  {
         this.email = email;
     }
     
+    /**
+     * Checks if password matches
+     * @param password Password to check
+     * @return true if matches, false otherwise
+     */
     public boolean checkPassword(String password){
         return this.password.equals(password);
     }
     
+    /**
+     * Checks if user is admin
+     * @return true if admin, false otherwise
+     */
     public boolean isAdmin(){
          return role.equalsIgnoreCase("admin");
     }
+    
+    /**
+     * Checks if user is staff
+     * @return true if staff, false otherwise
+     */
     public boolean isStaff(){
          return role.equalsIgnoreCase("staff");
     }
     
+    /**
+     * Checks if user is teacher
+     * @return true if teacher, false otherwise
+     */
     public boolean isTeacher(){
          return role.equalsIgnoreCase("teacher");
     }
+    
+    /**
+     * Checks if user is student
+     * @return true if student, false otherwise
+     */
     public boolean isStudent(){
           return role.equalsIgnoreCase("student");
     }

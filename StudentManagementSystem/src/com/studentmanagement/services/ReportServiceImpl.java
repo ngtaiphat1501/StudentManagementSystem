@@ -1,4 +1,3 @@
-// Nhan
 package com.studentmanagement.services;
 
 import com.studentmanagement.models.Student;
@@ -6,10 +5,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Implementation of ReportService for generating reports and statistics
+ */
 public class ReportServiceImpl implements ReportService {
 
     private List<Student> studentList;
 
+    /**
+     * Constructor for ReportServiceImpl
+     * @param studentList List of students
+     */
     public ReportServiceImpl(List<Student> studentList) {
         this.studentList = studentList != null ? studentList : new ArrayList<>();
     }
@@ -176,13 +182,17 @@ public class ReportServiceImpl implements ReportService {
             printWriter.println("==============================================");
             printWriter.close();
 
-            System.out.println("✅ Report exported to file: " + filePath);
+            System.out.println(" Report exported to file: " + filePath);
 
         } catch (java.io.IOException e) {
-            System.out.println("❌ Error exporting file: " + e.getMessage());
+            System.out.println(" Error exporting file: " + e.getMessage());
         }
     }
 
+    /**
+     * Exports student data to CSV file
+     * @param filePath Path to CSV file
+     */
     public void exportToCSV(String filePath) {
         try {
             java.io.FileWriter writer = new java.io.FileWriter(filePath);
@@ -202,13 +212,18 @@ public class ReportServiceImpl implements ReportService {
             }
 
             printWriter.close();
-            System.out.println("✅ CSV exported to file: " + filePath);
+            System.out.println(" CSV exported to file: " + filePath);
 
         } catch (java.io.IOException e) {
-            System.out.println("❌ Error exporting CSV: " + e.getMessage());
+            System.out.println(" Error exporting CSV: " + e.getMessage());
         }
     }
 
+    /**
+     * Gets ranking string based on GPA
+     * @param gpa GPA value
+     * @return Ranking string
+     */
     private String getStudentRanking(double gpa) {
         if (gpa >= 3.6) {
             return "Excellent";

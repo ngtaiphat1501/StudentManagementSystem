@@ -7,6 +7,9 @@ import com.studentmanagement.utils.ConsoleUtils;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Staff menu with read-only access to courses, students, and reports
+ */
 public class StaffMenu {
     private Scanner scanner;
     private UserManager userManager;
@@ -16,6 +19,13 @@ public class StaffMenu {
     private ActivityService activityService;
     private ReportService reportService;
     
+    /**
+     * Constructor - initializes services
+     * @param scanner Scanner for user input
+     * @param userManager User manager instance
+     * @param studentManager Student manager instance
+     * @param courseManager Course manager instance
+     */
     public StaffMenu(Scanner scanner, UserManager userManager, 
                      StudentManager studentManager, CourseManager courseManager) {
         this.scanner = scanner;
@@ -34,20 +44,23 @@ public class StaffMenu {
         this.reportService = new ReportServiceImpl(studentManager.getStudents());
     }
     
+    /**
+     * Displays the staff menu and handles user choices
+     */
     public void showMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("STAFF MENU");
             
-            System.out.println("👤 Welcome: " + userManager.getCurrentUser().getFullName());
+            System.out.println(" Welcome: " + userManager.getCurrentUser().getFullName());
             System.out.println("═══════════════════════════════════════════");
-            System.out.println("1. 📚 VIEW COURSE LIST");
-            System.out.println("2. 🧑‍🎓 VIEW STUDENT LIST");
-            System.out.println("3. 🔍 SEARCH STUDENTS");
-            System.out.println("4. 📊 VIEW STATISTICS REPORTS");
-            System.out.println("5. 📝 VIEW STUDENT TRANSCRIPT");
-            System.out.println("6. 🔐 CHANGE PASSWORD");
-            System.out.println("7. 🚪 LOGOUT");
+            System.out.println("1.  VIEW COURSE LIST");
+            System.out.println("2.  VIEW STUDENT LIST");
+            System.out.println("3.  SEARCH STUDENTS");
+            System.out.println("4.  VIEW STATISTICS REPORTS");
+            System.out.println("5.  VIEW STUDENT TRANSCRIPT");
+            System.out.println("6.  CHANGE PASSWORD");
+            System.out.println("7.  LOGOUT");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose function (1-7): ");
             
@@ -88,6 +101,9 @@ public class StaffMenu {
         }
     }
     
+    /**
+     * Displays transcript for a specific student
+     */
     private void viewStudentTranscript() {
         System.out.print("Enter student ID: ");
         String studentId = scanner.nextLine();

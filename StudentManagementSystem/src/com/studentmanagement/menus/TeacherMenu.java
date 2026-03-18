@@ -7,6 +7,9 @@ import com.studentmanagement.utils.ConsoleUtils;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Teacher menu with grade entry and student monitoring functions
+ */
 public class TeacherMenu {
 
     private Scanner scanner;
@@ -15,6 +18,13 @@ public class TeacherMenu {
     private CourseManager courseManager;
     private AcademicService academicService;
 
+    /**
+     * Constructor - initializes services
+     * @param scanner Scanner for user input
+     * @param userManager User manager instance
+     * @param studentManager Student manager instance
+     * @param courseManager Course manager instance
+     */
     public TeacherMenu(Scanner scanner, UserManager userManager,
             StudentManager studentManager, CourseManager courseManager) {
         this.scanner = scanner;
@@ -30,20 +40,23 @@ public class TeacherMenu {
         );
     }
 
+    /**
+     * Displays the teacher menu and handles user choices
+     */
     public void showMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("TEACHER MENU");
 
-            System.out.println("👨‍🏫 Welcome: " + userManager.getCurrentUser().getFullName());
+            System.out.println("? Welcome: " + userManager.getCurrentUser().getFullName());
             System.out.println("═══════════════════════════════════════════");
-            System.out.println("1. 📚 VIEW COURSE LIST");
-            System.out.println("2. 📝 ENTER GRADES");
-            System.out.println("3. 📊 VIEW CLASS GRADE BOARD");
-            System.out.println("4. 🔍 SEARCH STUDENTS");
-            System.out.println("5. ⚠️ CHECK ACADEMIC WARNING");
-            System.out.println("6. 🔐 CHANGE PASSWORD");
-            System.out.println("7. 🚪 LOGOUT");
+            System.out.println("1.  VIEW COURSE LIST");
+            System.out.println("2.  ENTER GRADES");
+            System.out.println("3.  VIEW CLASS GRADE BOARD");
+            System.out.println("4.  SEARCH STUDENTS");
+            System.out.println("5.  CHECK ACADEMIC WARNING");
+            System.out.println("6.  CHANGE PASSWORD");
+            System.out.println("7.  LOGOUT");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose function (1-7): ");
 
@@ -79,11 +92,17 @@ public class TeacherMenu {
         }
     }
 
+    /**
+     * Displays all courses
+     */
     private void viewAllCourses() {
         courseManager.displayAllCourses();
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Enters grades for a student in a course
+     */
     private void enterGrade() {
         ConsoleUtils.showHeader("ENTER GRADES");
 
@@ -99,10 +118,10 @@ public class TeacherMenu {
 
         student.displayInfo();
 
-        System.out.print("\nEnter course code (e.g., CT101): "); // FIXED: Thêm hướng dẫn
+        System.out.print("\nEnter course code (e.g., CT101): ");
         String courseCode = scanner.nextLine();
 
-        // FIXED: Tìm bằng mã môn học (CT101)
+        // Find by course code (CT101)
         Course course = courseManager.findCourseByCode(courseCode);
         if (course == null) {
             ConsoleUtils.showError("Course not found with code: " + courseCode);
@@ -137,6 +156,9 @@ public class TeacherMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays grade board for a specific class
+     */
     private void viewClassGradeBoard() {
         System.out.print("Enter class ID: ");
         String classId = scanner.nextLine();
@@ -183,11 +205,17 @@ public class TeacherMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Searches for students
+     */
     private void searchStudent() {
         studentManager.searchStudent(scanner);
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Checks and displays students with academic warnings
+     */
     private void checkAcademicWarning() {
         List<Student> warningStudents = academicService.checkAcademicWarning();
 
@@ -203,11 +231,20 @@ public class TeacherMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Changes the user's password
+     */
     private void changePassword() {
         userManager.changePassword(scanner);
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Helper method to truncate strings for display
+     * @param str String to truncate
+     * @param length Maximum length
+     * @return Truncated string with ellipsis if needed
+     */
     private String truncate(String str, int length) {
         if (str == null) {
             return "";

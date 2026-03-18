@@ -1,9 +1,11 @@
-// Nhans
 package com.studentmanagement.models;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Represents a course enrollment record for a student
+ */
 public class Enrollment implements Serializable {
     private int enrollmentId;
     private String studentId;
@@ -13,6 +15,14 @@ public class Enrollment implements Serializable {
     private Date registrationDate;
     private String status; // "Registered", "Cancelled", "Completed"
     
+    /**
+     * Constructor for Enrollment
+     * @param enrollmentId Unique enrollment ID
+     * @param studentId Student ID
+     * @param courseId Course ID
+     * @param semester Semester
+     * @param academicYear Academic year
+     */
     public Enrollment(int enrollmentId, String studentId, String courseId, 
                      String semester, String academicYear) {
         this.enrollmentId = enrollmentId;
@@ -24,20 +34,32 @@ public class Enrollment implements Serializable {
         this.status = "Registered";
     }
     
+    /**
+     * Registers the enrollment
+     */
     public void register() {
         status = "Registered";
         System.out.println("Course registration successful!");
     }
     
+    /**
+     * Drops/cancels the enrollment
+     */
     public void dropCourse() {
         status = "Cancelled";
         System.out.println("Course registration cancelled!");
     }
     
+    /**
+     * Marks the enrollment as completed
+     */
     public void markCompleted() {
         status = "Completed";
     }
     
+    /**
+     * Displays enrollment information
+     */
     public void displayEnrollmentInfo() {
         System.out.println("┌─────────────────────────────────────────────────────┐");
         System.out.println("│                ENROLLMENT INFORMATION               │");

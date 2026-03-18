@@ -4,6 +4,9 @@ import com.studentmanagement.managers.*;
 import com.studentmanagement.utils.ConsoleUtils;
 import java.util.Scanner;
 
+/**
+ * Main menu controller that handles login and role-based menu navigation
+ */
 public class MainMenu {
 
     private Scanner scanner;
@@ -15,6 +18,9 @@ public class MainMenu {
     private StudentMenu studentMenu;
     private StaffMenu staffMenu;
 
+    /**
+     * Constructor - initializes all managers
+     */
     public MainMenu() {
         this.scanner = new Scanner(System.in);
         this.userManager = new UserManager();
@@ -22,6 +28,9 @@ public class MainMenu {
         this.courseManager = new CourseManager();
     }
 
+    /**
+     * Starts the main application loop
+     */
     public void start() {
         while (true) {
             ConsoleUtils.clearScreen();
@@ -35,9 +44,12 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Displays login menu when no user is logged in
+     */
     private void showLoginMenu() {
-        System.out.println("1. 🔐 Login");
-        System.out.println("2. ❌ Exit");
+        System.out.println("1.  Login");
+        System.out.println("2.  Exit");
         System.out.println("═══════════════════════════════════════════");
         System.out.print("Choose: ");
 
@@ -57,6 +69,9 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Handles user login process
+     */
     private void login() {
         ConsoleUtils.showHeader("LOGIN");
 
@@ -88,6 +103,9 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Displays the appropriate menu based on user role
+     */
     private void showMainMenu() {
         String role = userManager.getCurrentUser().getRole();
 
@@ -112,12 +130,16 @@ public class MainMenu {
             }
             staffMenu.showMenu();
         } else {
-            System.out.println("❌ Error: Role or menu not determined!");
+            System.out.println(" Error: Role or menu not determined!");
             userManager.logout();
             ConsoleUtils.pressEnterToContinue(scanner);
         }
     }
 
+    /**
+     * Main entry point for the application
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         new MainMenu().start();
     }

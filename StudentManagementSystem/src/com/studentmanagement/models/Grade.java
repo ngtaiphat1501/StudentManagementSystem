@@ -1,11 +1,9 @@
-// Khanh
 package com.studentmanagement.models;
 
 import java.io.Serializable;
 
 /**
- *
- * @author TUF GAMING
+ * Represents a grade record for a student in a course
  */
 public class Grade implements Serializable {
 
@@ -17,6 +15,14 @@ public class Grade implements Serializable {
     private double totalScore;
     private String letterGrade;
 
+    /**
+     * Constructor for Grade
+     * @param gradeId Unique grade ID
+     * @param enrollmentId Associated enrollment ID
+     * @param attendanceScore Attendance score (0-10)
+     * @param midtermScore Midterm score (0-10)
+     * @param finalScore Final score (0-10)
+     */
     public Grade(int gradeId, int enrollmentId, double attendanceScore,
             double midtermScore, double finalScore) {
         this.gradeId = gradeId;
@@ -90,6 +96,12 @@ public class Grade implements Serializable {
         this.letterGrade = letterGrade;
     }
 
+    /**
+     * Enters grades and recalculates total and letter grade
+     * @param attendanceScore Attendance score
+     * @param midtermScore Midterm score
+     * @param finalScore Final score
+     */
     public void enterGrade(double attendanceScore, double midtermScore, double finalScore) {
         this.attendanceScore = attendanceScore;
         this.midtermScore = midtermScore;
@@ -100,10 +112,16 @@ public class Grade implements Serializable {
         System.out.println("Grade entry successful!");
     }
 
+    /**
+     * Calculates total score based on weights (10% attendance, 30% midterm, 60% final)
+     */
     public void calculateTotalScore() {
         totalScore = attendanceScore * 0.1 + midtermScore * 0.3 + finalScore * 0.6;
     }
 
+    /**
+     * Converts total score to letter grade
+     */
     public void calculateLetterGrade() {
         if (totalScore >= 8.5) {
             letterGrade = "A";
@@ -124,6 +142,9 @@ public class Grade implements Serializable {
         }
     }
 
+    /**
+     * Displays grade information
+     */
     public void displayGradeInfo() {
         System.out.printf("│ %-15s: %-35.1f │\n", "Attendance", attendanceScore);
         System.out.printf("│ %-15s: %-35.1f │\n", "Midterm", midtermScore);
@@ -133,6 +154,10 @@ public class Grade implements Serializable {
         System.out.printf("│ %-15s: %-35s │\n", "Classification", getGradeText());
     }
 
+    /**
+     * Gets descriptive text for letter grade
+     * @return Grade description
+     */
     public String getGradeText() {
         switch (letterGrade) {
             case "A":
@@ -156,6 +181,10 @@ public class Grade implements Serializable {
         }
     }
 
+    /**
+     * Checks if grade indicates academic warning
+     * @return true if total score < 4.0
+     */
     public boolean hasAcademicWarning() {
         return totalScore < 4;
     }

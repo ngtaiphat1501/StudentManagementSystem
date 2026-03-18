@@ -2,6 +2,9 @@ package com.studentmanagement.models;
 
 import java.io.Serializable;
 
+/**
+ * Represents a course in the academic system
+ */
 public class Course implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -15,9 +18,22 @@ public class Course implements Serializable {
     private String teacher;
     private Grade grade;
 
+    /**
+     * Default constructor
+     */
     public Course() {
     }
 
+    /**
+     * Constructor with all fields
+     * @param courseId System ID
+     * @param courseName Course name with code in parentheses
+     * @param credits Number of credits
+     * @param departmentId Department ID
+     * @param semester Semester number
+     * @param academicYear Academic year
+     * @param teacher Teacher name
+     */
     public Course(String courseId, String courseName, int credits, String departmentId, 
                   int semester, String academicYear, String teacher) {
         this.courseId = courseId;
@@ -97,10 +113,16 @@ public class Course implements Serializable {
         this.grade = grade;
     }
     
+    /**
+     * Processes course registration
+     */
     public void register() {
         System.out.println("Processing course registration: " + this.courseName + " (" + this.courseId + ")");
     }
 
+    /**
+     * Displays course information
+     */
     public void displayInfo() {
         System.out.println("--------------------------------------------------");
         System.out.println("Course ID    : " + this.courseId);

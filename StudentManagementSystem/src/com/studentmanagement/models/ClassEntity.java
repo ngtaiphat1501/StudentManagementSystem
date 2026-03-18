@@ -1,12 +1,10 @@
-//(Khanh)
 package com.studentmanagement.models;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
- *
- * @author TUF GAMING
+ * Represents a class entity containing a group of students
  */
 public class ClassEntity implements Serializable {
 
@@ -18,6 +16,16 @@ public class ClassEntity implements Serializable {
     private int totalStudents;
     private List<Student> students;
 
+    /**
+     * Constructor for ClassEntity
+     * @param classId Class ID
+     * @param className Class name
+     * @param departmentId Department ID
+     * @param academicYear Academic year
+     * @param advisor Advisor name
+     * @param totalStudents Total student count
+     * @param students List of students in the class
+     */
     public ClassEntity(String classId, String className, String departmentId, String academicYear, String advisor, int totalStudents, List<Student> students) {
         this.classId = classId;
         this.className = className;
@@ -84,13 +92,20 @@ public class ClassEntity implements Serializable {
         this.students = students;
     }
 
-    // Add student
+    /**
+     * Adds a student to the class
+     * @param student Student to add
+     */
     public void addStudent(Student student) {
         System.out.println("Add Student: " + student.getFullName());
         students.add(student);
     }
 
-    // Remove student
+    /**
+     * Removes a student from the class
+     * @param studentId ID of student to remove
+     * @return true if removal successful, false otherwise
+     */
     public boolean removeStudent(String studentId) {
         for (int i = 0; i < students.size(); i++) {
             Student s = students.get(i);

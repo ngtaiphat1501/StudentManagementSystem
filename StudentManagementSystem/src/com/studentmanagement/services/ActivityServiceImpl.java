@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.studentmanagement.services;
 
 import com.studentmanagement.models.Activity;
@@ -13,8 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- * @author TUF GAMING
+ * Implementation of ActivityService for activity and training score management
  */
 public class ActivityServiceImpl implements ActivityService {
 
@@ -24,6 +18,10 @@ public class ActivityServiceImpl implements ActivityService {
     private int nextActivityId = 1;
     private int nextScoreId = 1;
 
+    /**
+     * Constructor for ActivityServiceImpl
+     * @param studentService Student service instance
+     */
     public ActivityServiceImpl(StudentService studentService) {
         this.studentService = studentService;
         this.activities = new ArrayList<>();
@@ -70,7 +68,9 @@ public class ActivityServiceImpl implements ActivityService {
         this.nextScoreId = nextScoreId;
     }
 
-    // Sample data
+    /**
+     * Initializes sample activity data
+     */
     public void initializeSampleData() {
         if (activities == null) {
             activities = new ArrayList<>();
@@ -93,9 +93,9 @@ public class ActivityServiceImpl implements ActivityService {
             trainingScores.add(new TrainingScore(nextScoreId++, "CE200968", "2023-2024", 1));
             trainingScores.add(new TrainingScore(nextScoreId++, "CE200969", "2023-2024", 1));
 
-            System.out.println("✅ Sample activity data created");
+            System.out.println(" Sample activity data created");
         } catch (Exception e) {
-            System.out.println("❌ Error creating sample data: " + e.getMessage());
+            System.out.println(" Error creating sample data: " + e.getMessage());
         }
     }
 
@@ -104,7 +104,7 @@ public class ActivityServiceImpl implements ActivityService {
             String organization, Date startDate, Date endDate, int hourSpent) {
         Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
         if (student == null) {
-            System.out.println("❌ Student not found...");
+            System.out.println(" Student not found...");
             return false;
         }
 
@@ -191,8 +191,8 @@ public class ActivityServiceImpl implements ActivityService {
         System.out.println("║            TRAINING REPORT                   ║");
         System.out.println("╚══════════════════════════════════════════════╝");
 
-        System.out.println("📊 Total activities: " + activities.size());
-        System.out.println("📊 Total training scores: " + trainingScores.size());
+        System.out.println(" Total activities: " + activities.size());
+        System.out.println(" Total training scores: " + trainingScores.size());
 
         // Classification statistics
         int excellent = 0, good = 0, average = 0, weak = 0;
@@ -225,7 +225,13 @@ public class ActivityServiceImpl implements ActivityService {
         System.out.println("Weak: " + weak);
     }
 
-    // Find training score
+    /**
+     * Finds training score by student ID, academic year, and semester
+     * @param studentId Student ID
+     * @param academicYear Academic year
+     * @param semester Semester
+     * @return TrainingScore object if found, null otherwise
+     */
     public TrainingScore findTrainingScore(String studentId, String academicYear, int semester) {
         for (TrainingScore score : trainingScores) {
             if (score.getStudentId().equals(studentId)

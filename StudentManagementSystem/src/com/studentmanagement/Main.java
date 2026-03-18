@@ -3,7 +3,14 @@ package com.studentmanagement;
 import com.studentmanagement.menus.MainMenu;
 import com.studentmanagement.utils.ConsoleUtils;
 
+/**
+ * Main entry point for the Student Management System
+ */
 public class Main {
+    /**
+     * Main method to start the application
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         ConsoleUtils.showHeader("STUDENT MANAGEMENT SYSTEM");
         System.out.println("Starting system...");

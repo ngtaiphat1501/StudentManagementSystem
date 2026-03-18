@@ -10,6 +10,9 @@ import java.util.Scanner;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
+/**
+ * Student menu with personal information, course registration, and grade viewing
+ */
 public class StudentMenu {
 
     private Scanner scanner;
@@ -20,6 +23,13 @@ public class StudentMenu {
     private AcademicService academicService;
     private ActivityService activityService;
 
+    /**
+     * Constructor - links user account to student record
+     * @param scanner Scanner for user input
+     * @param userManager User manager instance
+     * @param studentManager Student manager instance
+     * @param courseManager Course manager instance
+     */
     public StudentMenu(Scanner scanner, UserManager userManager,
             StudentManager studentManager, CourseManager courseManager) {
         this.scanner = scanner;
@@ -31,20 +41,20 @@ public class StudentMenu {
         String email = userManager.getCurrentUser().getEmail();
         String fullName = userManager.getCurrentUser().getFullName();
 
-        // 1. Tìm theo username
+        // 1. Find by username
         this.currentStudent = studentManager.findStudentByStudentId(username);
         
-        // 2. Tìm theo email
+        // 2. Find by email
         if (this.currentStudent == null) {
             this.currentStudent = studentManager.findStudentByEmail(email);
         }
         
-        // 3. Tìm theo tên
+        // 3. Find by name
         if (this.currentStudent == null) {
             this.currentStudent = studentManager.findStudentByName(fullName);
         }
         
-        // 4. Tự động tạo student mới nếu không tìm thấy
+        // 4. Auto-create new student if not found
         if (this.currentStudent == null && userManager.getCurrentUser().getRole().equalsIgnoreCase("STUDENT")) {
             try {
                 String newStudentId = "STU" + String.format("%03d", studentManager.getStudents().size() + 1);
@@ -65,10 +75,10 @@ public class StudentMenu {
                 studentManager.getStudents().add(newStudent);
                 this.currentStudent = newStudent;
                 
-                System.out.println("✅ Auto-created student profile for: " + fullName);
+                System.out.println(" Auto-created student profile for: " + fullName);
                 System.out.println("   Student ID: " + newStudentId);
             } catch (Exception e) {
-                System.out.println("❌ Error auto-creating student: " + e.getMessage());
+                System.out.println(" Error auto-creating student: " + e.getMessage());
             }
         }
 
@@ -86,6 +96,11 @@ public class StudentMenu {
         this.activityService = new ActivityServiceImpl(new StudentServiceImpl());
     }
 
+    /**
+     * Removes accents from a string for accent-insensitive search
+     * @param str Input string
+     * @return String with accents removed
+     */
     private String removeAccent(String str) {
         if (str == null) return "";
         try {
@@ -99,26 +114,29 @@ public class StudentMenu {
         }
     }
 
+    /**
+     * Displays the student menu and handles user choices
+     */
     public void showMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("STUDENT MENU");
 
-            System.out.println("🧑‍🎓 Welcome: " + userManager.getCurrentUser().getFullName());
+            System.out.println(" Welcome: " + userManager.getCurrentUser().getFullName());
             if (currentStudent != null) {
-                System.out.println("📚 Student ID: " + currentStudent.getStudentId());
-                System.out.println("🏫 Class: " + currentStudent.getClassId());
+                System.out.println(" Student ID: " + currentStudent.getStudentId());
+                System.out.println(" Class: " + currentStudent.getClassId());
             }
             System.out.println("═══════════════════════════════════════════");
-            System.out.println("1. 📋 VIEW PERSONAL INFORMATION");
-            System.out.println("2. 📚 VIEW COURSE LIST");
-            System.out.println("3. 📝 REGISTER COURSE");
-            System.out.println("4. 📊 VIEW TRANSCRIPT");
-            System.out.println("5. 📈 VIEW GPA");
-            System.out.println("6. 🏆 VIEW TRAINING SCORE");
-            System.out.println("7. 📋 VIEW ACTIVITY HISTORY");
-            System.out.println("8. 🔐 CHANGE PASSWORD");
-            System.out.println("9. 🚪 LOGOUT");
+            System.out.println("1.  VIEW PERSONAL INFORMATION");
+            System.out.println("2.  VIEW COURSE LIST");
+            System.out.println("3.  REGISTER COURSE");
+            System.out.println("4.  VIEW TRANSCRIPT");
+            System.out.println("5.  VIEW GPA");
+            System.out.println("6.  VIEW TRAINING SCORE");
+            System.out.println("7.  VIEW ACTIVITY HISTORY");
+            System.out.println("8.  CHANGE PASSWORD");
+            System.out.println("9.  LOGOUT");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose function (1-9): ");
 
@@ -160,6 +178,9 @@ public class StudentMenu {
         }
     }
 
+    /**
+     * Displays personal information
+     */
     private void viewPersonalInfo() {
         if (currentStudent != null) {
             currentStudent.displayInfo();
@@ -174,11 +195,17 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays all available courses
+     */
     private void viewAllCourses() {
         courseManager.displayAllCourses();
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Registers the current student for a course
+     */
     private void registerCourse() {
         if (currentStudent == null) {
             ConsoleUtils.showError("Student information not found!");
@@ -217,6 +244,9 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays the student's transcript
+     */
     private void viewTranscript() {
         if (currentStudent == null) {
             ConsoleUtils.showError("Student information not found!");
@@ -237,6 +267,9 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Calculates and displays the student's GPA
+     */
     private void viewGPA() {
         if (currentStudent == null) {
             ConsoleUtils.showError("Student information not found!");
@@ -271,6 +304,9 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays the student's training score
+     */
     private void viewTrainingScore() {
         if (currentStudent == null) {
             ConsoleUtils.showError("Student information not found!");
@@ -287,6 +323,9 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays the student's activity history
+     */
     private void viewActivityHistory() {
         if (currentStudent == null) {
             ConsoleUtils.showError("Student information not found!");
@@ -307,6 +346,9 @@ public class StudentMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Changes the user's password
+     */
     private void changePassword() {
         userManager.changePassword(scanner);
         ConsoleUtils.pressEnterToContinue(scanner);

@@ -12,12 +12,18 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * Manages course-related operations including CRUD, search, and statistics
+ */
 public class CourseManager {
 
     private List<Course> courses;
     private FileService fileService;
     private int nextCourseId = 1;
 
+    /**
+     * Constructor - initializes course list and loads data from file
+     */
     public CourseManager() {
         this.courses = new ArrayList<>();
         this.fileService = new FileServiceImpl();
@@ -28,6 +34,9 @@ public class CourseManager {
         }
     }
 
+    /**
+     * Loads courses from data file
+     */
     private void loadCoursesFromFile() {
         Object data = fileService.loadData("courses.dat");
         if (data instanceof List) {
@@ -41,7 +50,7 @@ public class CourseManager {
                             nextCourseId = id + 1;
                         }
                     } catch (NumberFormatException e) {
-                        // Skip
+                        // Skip invalid IDs
                     }
                 }
             }
@@ -49,10 +58,16 @@ public class CourseManager {
         }
     }
 
+    /**
+     * Saves courses to data file
+     */
     private void saveCoursesToFile() {
         fileService.saveData("courses.dat", courses);
     }
 
+    /**
+     * Creates sample course data for initial setup
+     */
     private void initializeSampleData() {
         courses.add(new Course(
                 generateCourseId(),
@@ -108,10 +123,19 @@ public class CourseManager {
         System.out.println("✅ Sample course data created");
     }
 
+    /**
+     * Generates a unique course ID in format Cxxx
+     * @return Generated course ID
+     */
     private String generateCourseId() {
         return "C" + String.format("%03d", nextCourseId++);
     }
 
+    /**
+     * Extracts course code from course name (text inside parentheses)
+     * @param courseName Full course name with code in parentheses
+     * @return Extracted course code or empty string if not found
+     */
     public String extractCourseCode(String courseName) {
         if (courseName == null) {
             return "";
@@ -124,10 +148,20 @@ public class CourseManager {
         return "";
     }
 
+    /**
+     * Formats course name with code in parentheses
+     * @param courseName Base course name
+     * @param courseCode Course code
+     * @return Formatted course name
+     */
     private String formatCourseName(String courseName, String courseCode) {
         return courseName + " (" + courseCode + ")";
     }
 
+    /**
+     * Adds a new course to the system
+     * @param scanner Scanner for user input
+     */
     public void addCourse(Scanner scanner) {
         ConsoleUtils.showHeader("ADD NEW COURSE");
 
@@ -179,6 +213,10 @@ public class CourseManager {
         displayCourseInfo(course);
     }
 
+    /**
+     * Displays detailed course information in a formatted box
+     * @param course Course to display
+     */
     private void displayCourseInfo(Course course) {
         String courseCode = extractCourseCode(course.getCourseName());
         String courseName = course.getCourseName().replace(" (" + courseCode + ")", "");
@@ -197,6 +235,10 @@ public class CourseManager {
         System.out.println("└─────────────────────────────────────────────────────┘");
     }
 
+    /**
+     * Updates an existing course's information
+     * @param scanner Scanner for user input
+     */
     public void updateCourse(Scanner scanner) {
         ConsoleUtils.showHeader("UPDATE COURSE INFORMATION");
 
@@ -272,6 +314,11 @@ public class CourseManager {
         displayCourseInfo(course);
     }
 
+    /**
+     * Deletes a course from the system
+     * @param scanner Scanner for user input
+     * @return true if deletion was successful, false otherwise
+     */
     public boolean deleteCourse(Scanner scanner) {
         ConsoleUtils.showHeader("DELETE COURSE");
 
@@ -301,6 +348,11 @@ public class CourseManager {
         }
     }
 
+    /**
+     * Finds a course by its system ID
+     * @param courseId System ID to search for
+     * @return Course object if found, null otherwise
+     */
     public Course findCourseById(String courseId) {
         for (Course course : courses) {
             if (course.getCourseId().equalsIgnoreCase(courseId)) {
@@ -310,6 +362,11 @@ public class CourseManager {
         return null;
     }
 
+    /**
+     * Finds a course by its course code
+     * @param courseCode Course code to search for
+     * @return Course object if found, null otherwise
+     */
     public Course findCourseByCode(String courseCode) {
         for (Course course : courses) {
             String code = extractCourseCode(course.getCourseName());
@@ -320,6 +377,11 @@ public class CourseManager {
         return null;
     }
 
+    /**
+     * Finds courses by name keyword (with accent-insensitive search)
+     * @param keyword Search keyword
+     * @return List of matching courses
+     */
     public List<Course> findCoursesByName(String keyword) {
         List<Course> results = new ArrayList<>();
 
@@ -340,6 +402,11 @@ public class CourseManager {
         return results;
     }
 
+    /**
+     * Removes accents/diacritics from a string for case-insensitive search
+     * @param str Input string
+     * @return String with accents removed
+     */
     private String removeAccent(String str) {
         if (str == null) {
             return "";
@@ -355,6 +422,11 @@ public class CourseManager {
         }
     }
 
+    /**
+     * Finds courses by academic year
+     * @param academicYear Academic year to search for
+     * @return List of matching courses
+     */
     public List<Course> findCoursesByAcademicYear(String academicYear) {
         List<Course> results = new ArrayList<>();
         for (Course course : courses) {
@@ -366,6 +438,11 @@ public class CourseManager {
         return results;
     }
 
+    /**
+     * Gets courses by department
+     * @param department Department ID
+     * @return List of courses in the department
+     */
     public List<Course> getCoursesByDepartment(String department) {
         List<Course> results = new ArrayList<>();
         for (Course course : courses) {
@@ -377,6 +454,11 @@ public class CourseManager {
         return results;
     }
 
+    /**
+     * Finds courses by teacher name
+     * @param teacher Teacher name keyword
+     * @return List of matching courses
+     */
     public List<Course> findCoursesByTeacher(String teacher) {
         List<Course> results = new ArrayList<>();
         for (Course course : courses) {
@@ -388,7 +470,9 @@ public class CourseManager {
         return results;
     }
 
-    // CHỈ GIỮ LẠI MỘT METHOD displayAllCourses() - ĐÃ XÓA METHOD TRÙNG LẶP
+    /**
+     * Displays all courses in a formatted table
+     */
     public void displayAllCourses() {
         if (courses.isEmpty()) {
             System.out.println("📭 Course list is empty!");
@@ -424,6 +508,12 @@ public class CourseManager {
         System.out.println(" Total courses: " + courses.size());
     }
 
+    /**
+     * Truncates a string to specified length with ellipsis
+     * @param str String to truncate
+     * @param maxLength Maximum length
+     * @return Truncated string
+     */
     private String truncateString(String str, int maxLength) {
         if (str == null) {
             return "";
@@ -434,6 +524,9 @@ public class CourseManager {
         return str.substring(0, maxLength - 3) + "...";
     }
 
+    /**
+     * Displays course statistics by department and semester
+     */
     public void showCourseStatistics() {
         if (courses.isEmpty()) {
             System.out.println("📭 No data for statistics!");
@@ -481,14 +574,26 @@ public class CourseManager {
         }
     }
 
+    /**
+     * Gets the list of all courses
+     * @return List of courses
+     */
     public List<Course> getCourses() {
         return courses;
     }
 
+    /**
+     * Sets the list of courses
+     * @param courses New course list
+     */
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 
+    /**
+     * Gets the total number of courses
+     * @return Course count
+     */
     public int getCourseCount() {
         return courses.size();
     }

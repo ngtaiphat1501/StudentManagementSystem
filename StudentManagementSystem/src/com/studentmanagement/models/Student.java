@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Represents a student, extending Person with academic information
+ */
 public class Student extends Person {
     private String studentId;
     private String classId;
@@ -16,6 +19,20 @@ public class Student extends Person {
     private List<Course> registeredCourses;
     private List<Activity> activities;
 
+    /**
+     * Constructor for Student
+     * @param id System ID
+     * @param studentId Student ID
+     * @param fullName Full name
+     * @param birthDate Birth date
+     * @param gender Gender
+     * @param phone Phone
+     * @param email Email
+     * @param address Address
+     * @param classId Class ID
+     * @param enrollmentDate Enrollment date
+     * @param status Status (Studying/Suspended/Dropped)
+     */
     public Student(String id, String studentId, String fullName, Date birthDate,
                    String gender, String phone, String email, String address,
                    String classId, Date enrollmentDate, String status) {
@@ -31,16 +48,27 @@ public class Student extends Person {
         this.activities = new ArrayList<>();
     }
 
+    /**
+     * Adds a registered course and recalculates GPA
+     * @param course Course to add
+     */
     public void addRegisteredCourse(Course course) {
         registeredCourses.add(course);
         calculateGPA();
     }
 
+    /**
+     * Adds an activity and recalculates training score
+     * @param activity Activity to add
+     */
     public void addActivity(Activity activity) {
         activities.add(activity);
         calculateTrainingScore();
     }
 
+    /**
+     * Calculates GPA based on registered courses with grades
+     */
     public void calculateGPA() {
         if (registeredCourses.isEmpty()) {
             gpa = 0.0;
@@ -62,6 +90,9 @@ public class Student extends Person {
         }
     }
 
+    /**
+     * Calculates training score from activities
+     */
     public void calculateTrainingScore() {
         double total = 0;
         for (Activity act : activities) {
@@ -71,6 +102,9 @@ public class Student extends Person {
         updateRanking();
     }
 
+    /**
+     * Updates ranking based on training score
+     */
     private void updateRanking() {
         if (trainingScore >= 90) ranking = "Excellent";
         else if (trainingScore >= 80) ranking = "Good";
@@ -79,6 +113,7 @@ public class Student extends Person {
         else ranking = "Weak";
     }
 
+    // Getters and Setters
     public String getStudentId() { return studentId; }
     public void setStudentId(String studentId) { this.studentId = studentId; }
     public String getClassId() { return classId; }

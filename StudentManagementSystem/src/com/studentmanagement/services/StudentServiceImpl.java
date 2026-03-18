@@ -1,4 +1,3 @@
-// Tai
 package com.studentmanagement.services;
 
 import com.studentmanagement.utils.DateUtils;
@@ -9,16 +8,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Implementation of StudentService for student management
+ */
 public class StudentServiceImpl implements StudentService {
 
     private List<Student> students;
     private int nextStudentId = 1;
 
+    /**
+     * Constructor - initializes student list with sample data
+     */
     public StudentServiceImpl() {
         this.students = new ArrayList<>();
         initializeSampleData();
     }
 
+    /**
+     * Initializes sample student data
+     */
     private void initializeSampleData() {
         try {
             students.add(new Student(
@@ -49,7 +57,7 @@ public class StudentServiceImpl implements StudentService {
                     "Studying"
             ));
             
-            // Thêm sinh viên cho tài khoản student
+            // Add student for student account
             students.add(new Student(
                     "S003",
                     "STU001",
@@ -82,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
             String studentId = scanner.nextLine();
 
             if (findStudentByStudentId(studentId) != null) {
-                System.out.println("❌ Student ID already exists!");
+                System.out.println(" Student ID already exists!");
                 return;
             }
 
@@ -102,7 +110,7 @@ public class StudentServiceImpl implements StudentService {
             String email = scanner.nextLine();
 
             if (!Validator.isValidEmail(email)) {
-                System.out.println("❌ Invalid email!");
+                System.out.println(" Invalid email!");
                 return;
             }
 
@@ -124,11 +132,11 @@ public class StudentServiceImpl implements StudentService {
 
             students.add(student);
 
-            System.out.println("✅ Student added successfully!");
+            System.out.println(" Student added successfully!");
             student.displayInfo();
 
         } catch (Exception e) {
-            System.out.println("❌ Error adding student: " + e.getMessage());
+            System.out.println(" Error adding student: " + e.getMessage());
         }
     }
 
@@ -137,7 +145,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = findStudentByStudentId(studentId);
 
         if (student == null) {
-            System.out.println("❌ Student not found with ID: " + studentId);
+            System.out.println(" Student not found with ID: " + studentId);
             return;
         }
 
@@ -181,7 +189,7 @@ public class StudentServiceImpl implements StudentService {
                 if (Validator.isValidEmail(email)) {
                     student.setEmail(email);
                 } else {
-                    System.out.println("❌ Invalid email!");
+                    System.out.println(" Invalid email!");
                 }
             }
 
@@ -203,11 +211,11 @@ public class StudentServiceImpl implements StudentService {
                 student.setStatus(status);
             }
 
-            System.out.println("\n✅ Update successful!");
+            System.out.println("\n Update successful!");
             student.displayInfo();
 
         } catch (Exception e) {
-            System.out.println("❌ Error updating: " + e.getMessage());
+            System.out.println(" Error updating: " + e.getMessage());
         }
     }
 
@@ -260,10 +268,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void exportToExcel(String filePath) {
-        System.out.println("📤 Exporting data to Excel: " + filePath);
-        System.out.println("✅ Export successful!");
+        System.out.println(" Exporting data to Excel: " + filePath);
+        System.out.println(" Export successful!");
     }
 
+    /**
+     * Finds a student by student ID
+     * @param studentId Student ID to search for
+     * @return Student object if found, null otherwise
+     */
     public Student findStudentByStudentId(String studentId) {
         for (Student student : students) {
             if (student.getStudentId().equals(studentId)) {
@@ -273,6 +286,11 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    /**
+     * Finds a student by system ID
+     * @param id System ID to search for
+     * @return Student object if found, null otherwise
+     */
     public Student findStudentById(String id) {
         for (Student student : students) {
             if (student.getId().equals(id)) {

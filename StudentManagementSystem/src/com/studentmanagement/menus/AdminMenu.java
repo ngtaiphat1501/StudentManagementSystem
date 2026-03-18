@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Admin menu providing access to all system management functions
+ */
 public class AdminMenu {
 
     private Scanner scanner;
@@ -19,6 +22,13 @@ public class AdminMenu {
     private ActivityService activityService;
     private ReportService reportService;
 
+    /**
+     * Constructor - initializes all services
+     * @param scanner Scanner for user input
+     * @param userManager User manager instance
+     * @param studentManager Student manager instance
+     * @param courseManager Course manager instance
+     */
     public AdminMenu(Scanner scanner, UserManager userManager,
             StudentManager studentManager, CourseManager courseManager) {
         this.scanner = scanner;
@@ -50,22 +60,25 @@ public class AdminMenu {
         this.reportService = new ReportServiceImpl(studentManager.getStudents());
     }
 
+    /**
+     * Displays the main admin menu and handles user choices
+     */
     public void showMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("ADMIN MENU");
 
-            System.out.println("👤 Welcome: " + userManager.getCurrentUser().getFullName());
+            System.out.println(" Welcome: " + userManager.getCurrentUser().getFullName());
             System.out.println("═══════════════════════════════════════════");
-            System.out.println("1. 📚 COURSE MANAGEMENT");
-            System.out.println("2. 🧑‍🎓 STUDENT MANAGEMENT");
-            System.out.println("3. 📝 GRADE MANAGEMENT");
-            System.out.println("4. 🏆 ACTIVITY MANAGEMENT");
-            System.out.println("5. 📊 REPORTS & STATISTICS");
-            System.out.println("6. 👥 USER MANAGEMENT");
-            System.out.println("7. 💾 BACKUP & RESTORE");
-            System.out.println("8. 🔐 CHANGE PASSWORD");
-            System.out.println("9. 🚪 LOGOUT");
+            System.out.println("1.  COURSE MANAGEMENT");
+            System.out.println("2.  STUDENT MANAGEMENT");
+            System.out.println("3.  GRADE MANAGEMENT");
+            System.out.println("4.  ACTIVITY MANAGEMENT");
+            System.out.println("5.  REPORTS & STATISTICS");
+            System.out.println("6.  USER MANAGEMENT");
+            System.out.println("7.  BACKUP & RESTORE");
+            System.out.println("8.  CHANGE PASSWORD");
+            System.out.println("9.  LOGOUT");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose function (1-9): ");
 
@@ -107,19 +120,21 @@ public class AdminMenu {
         }
     }
 
-    // ==================== COURSE MANAGEMENT ====================
+    /**
+     * Course management submenu
+     */
     private void courseManagementMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("COURSE MANAGEMENT");
 
-            System.out.println("1. 📋 View all courses");
-            System.out.println("2. ➕ Add new course");
-            System.out.println("3. ✏️ Update course information");
-            System.out.println("4. ❌ Delete course");
-            System.out.println("5. 🔍 Search courses");
-            System.out.println("6. 📊 Course statistics");
-            System.out.println("7. 🔙 Back");
+            System.out.println("1.  View all courses");
+            System.out.println("2.  Add new course");
+            System.out.println("3.  Update course information");
+            System.out.println("4.  Delete course");
+            System.out.println("5.  Search courses");
+            System.out.println("6.  Course statistics");
+            System.out.println("7.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -158,13 +173,16 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Course search submenu
+     */
     private void searchCourseMenu() {
         ConsoleUtils.showHeader("SEARCH COURSES");
 
-        System.out.println("1. 🔍 Search by name");
-        System.out.println("2. 🏫 Search by department");
-        System.out.println("3. 👨‍🏫 Search by teacher");
-        System.out.println("4. 🔙 Back");
+        System.out.println("1.  Search by name");
+        System.out.println("2.  Search by department");
+        System.out.println("3.  Search by teacher");
+        System.out.println("4.  Back");
         System.out.print("Choose: ");
 
         String choice = scanner.nextLine();
@@ -199,19 +217,21 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== STUDENT MANAGEMENT ====================
+    /**
+     * Student management submenu
+     */
     private void studentManagementMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("STUDENT MANAGEMENT");
 
-            System.out.println("1. 📋 View all students");
-            System.out.println("2. ➕ Add new student");
-            System.out.println("3. ✏️ Update student information");
-            System.out.println("4. ❌ Delete student");
-            System.out.println("5. 🔍 Search students");
-            System.out.println("6. 📊 View class statistics");
-            System.out.println("7. 🔙 Back");
+            System.out.println("1.  View all students");
+            System.out.println("2.  Add new student");
+            System.out.println("3.  Update student information");
+            System.out.println("4.  Delete student");
+            System.out.println("5.  Search students");
+            System.out.println("6.  View class statistics");
+            System.out.println("7.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -250,6 +270,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Displays statistics for a specific class
+     */
     private void viewClassStatistics() {
         System.out.print("Enter class ID: ");
         String classId = scanner.nextLine();
@@ -264,18 +287,20 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== GRADE MANAGEMENT ====================
+    /**
+     * Grade management submenu
+     */
     private void gradeManagementMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("GRADE MANAGEMENT");
 
-            System.out.println("1. 📝 Register course for student");
-            System.out.println("2. ✏️ Enter grades");
-            System.out.println("3. 📊 View student transcript");
-            System.out.println("4. 📈 Calculate student GPA");
-            System.out.println("5. ⚠️ Check academic warning");
-            System.out.println("6. 🔙 Back");
+            System.out.println("1.  Register course for student");
+            System.out.println("2.  Enter grades");
+            System.out.println("3.  View student transcript");
+            System.out.println("4.  Calculate student GPA");
+            System.out.println("5.  Check academic warning");
+            System.out.println("6.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -306,6 +331,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Registers a course for a student
+     */
     private void registerCourseForStudent() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -319,10 +347,10 @@ public class AdminMenu {
 
         courseManager.displayAllCourses();
 
-        System.out.print("Enter course code to register (e.g., CT101): "); // FIXED: Thêm hướng dẫn
+        System.out.print("Enter course code to register (e.g., CT101): ");
         String courseCode = scanner.nextLine();
 
-        // FIXED: Tìm course bằng mã môn học (CT101) chứ không phải mã hệ thống
+        // Find course by course code (CT101) not system ID
         Course course = courseManager.findCourseByCode(courseCode);
         if (course == null) {
             ConsoleUtils.showError("Course not found with code: " + courseCode);
@@ -346,6 +374,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Enters grades for a student in a course
+     */
     private void enterGradeForStudent() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -372,6 +403,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays a student's transcript
+     */
     private void viewStudentTranscript() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -389,6 +423,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Calculates and displays a student's GPA
+     */
     private void calculateStudentGPA() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -398,6 +435,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Checks and displays students with academic warnings
+     */
     private void checkAcademicWarning() {
         List<Student> warningStudents = academicService.checkAcademicWarning();
 
@@ -413,17 +453,19 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== ACTIVITY MANAGEMENT ====================
+    /**
+     * Activity management submenu
+     */
     private void activityManagementMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("ACTIVITY MANAGEMENT");
 
-            System.out.println("1. ➕ Add activity for student");
-            System.out.println("2. 📊 Calculate training score");
-            System.out.println("3. 🏆 View training ranking");
-            System.out.println("4. 📋 Activity report");
-            System.out.println("5. 🔙 Back");
+            System.out.println("1.  Add activity for student");
+            System.out.println("2.  Calculate training score");
+            System.out.println("3.  View training ranking");
+            System.out.println("4.  Activity report");
+            System.out.println("5.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -451,6 +493,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Adds an activity for a student
+     */
     private void addActivityForStudent() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -505,6 +550,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Calculates and displays a student's training score
+     */
     private void calculateTrainingScore() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -514,6 +562,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays a student's training ranking
+     */
     private void viewTrainingRanking() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -523,6 +574,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays activity report for a student
+     */
     private void viewActivityReport() {
         System.out.print("Student ID: ");
         String studentId = scanner.nextLine();
@@ -540,19 +594,21 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== REPORTS & STATISTICS ====================
+    /**
+     * Reports and statistics submenu
+     */
     private void reportMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("REPORTS & STATISTICS");
 
-            System.out.println("1. 📊 Summary report");
-            System.out.println("2. 📈 GPA distribution statistics");
-            System.out.println("3. 🏆 Top 10 outstanding students");
-            System.out.println("4. 📋 Academic classification");
-            System.out.println("5. 📊 Academic report");
-            System.out.println("6. 📊 Training report");
-            System.out.println("7. 🔙 Back");
+            System.out.println("1.  Summary report");
+            System.out.println("2.  GPA distribution statistics");
+            System.out.println("3.  Top 10 outstanding students");
+            System.out.println("4.  Academic classification");
+            System.out.println("5.  Academic report");
+            System.out.println("6.  Training report");
+            System.out.println("7.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -589,6 +645,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Displays GPA distribution statistics
+     */
     private void viewGPAStatistics() {
         java.util.Map<String, Integer> gpaStats = reportService.getGPAStatistics();
 
@@ -603,6 +662,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays top 10 students based on GPA and training score
+     */
     private void viewTop10Students() {
         List<Student> top10 = reportService.getTop10Students();
 
@@ -620,6 +682,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays academic classification statistics
+     */
     private void viewClassification() {
         java.util.Map<String, Integer> classification = reportService.getClassificationCount();
 
@@ -634,19 +699,20 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== USER MANAGEMENT ====================
-    // Thêm vào userManagementMenu()
+    /**
+     * User management submenu
+     */
     private void userManagementMenu() {
         while (true) {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("USER MANAGEMENT");
 
-            System.out.println("1. 📋 List users");
-            System.out.println("2. ➕ Add new user");
-            System.out.println("3. ✏️ Update user information");
-            System.out.println("4. ❌ Delete user");
-            System.out.println("5. 🔗 Link Student Account");
-            System.out.println("6. 🔙 Back");
+            System.out.println("1.  List users");
+            System.out.println("2.  Add new user");
+            System.out.println("3.  Update user information");
+            System.out.println("4.  Delete user");
+            System.out.println("5.  Link Student Account");
+            System.out.println("6.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -677,6 +743,9 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Links a user account to a student record
+     */
     private void linkStudentAccount() {
         ConsoleUtils.showHeader("LINK STUDENT ACCOUNT");
 
@@ -734,6 +803,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Displays all users in a formatted table
+     */
     private void displayAllUsers() {
         List<User> users = userManager.getUsers();
 
@@ -752,6 +824,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Adds a new user
+     */
     private void addUser() {
         ConsoleUtils.showHeader("ADD NEW USER");
 
@@ -793,6 +868,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Updates an existing user
+     */
     private void updateUser() {
         System.out.print("Enter username to update: ");
         String username = scanner.nextLine();
@@ -847,6 +925,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
+    /**
+     * Deletes a user
+     */
     private void deleteUser() {
         System.out.print("Enter username to delete: ");
         String username = scanner.nextLine();
@@ -881,7 +962,9 @@ public class AdminMenu {
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // ==================== BACKUP & RESTORE ====================
+    /**
+     * Backup and restore submenu
+     */
     private void backupRestoreMenu() {
         FileService fileService = new FileServiceImpl();
 
@@ -889,10 +972,10 @@ public class AdminMenu {
             ConsoleUtils.clearScreen();
             ConsoleUtils.showHeader("BACKUP & RESTORE");
 
-            System.out.println("1. 💾 Backup data");
-            System.out.println("2. 📂 List backups");
-            System.out.println("3. 🔄 Restore data");
-            System.out.println("4. 🔙 Back");
+            System.out.println("1.  Backup data");
+            System.out.println("2.  List backups");
+            System.out.println("3.  Restore data");
+            System.out.println("4.  Back");
             System.out.println("═══════════════════════════════════════════");
             System.out.print("Choose: ");
 
@@ -925,13 +1008,20 @@ public class AdminMenu {
         }
     }
 
-    // ==================== CHANGE PASSWORD ====================
+    /**
+     * Changes password for current user
+     */
     private void changePassword() {
         userManager.changePassword(scanner);
         ConsoleUtils.pressEnterToContinue(scanner);
     }
 
-    // Helper method
+    /**
+     * Helper method to truncate strings for display
+     * @param str String to truncate
+     * @param length Maximum length
+     * @return Truncated string with ellipsis if needed
+     */
     private String truncate(String str, int length) {
         if (str == null) {
             return "";

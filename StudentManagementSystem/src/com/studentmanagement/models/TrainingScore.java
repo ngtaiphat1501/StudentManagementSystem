@@ -2,6 +2,9 @@ package com.studentmanagement.models;
 
 import java.io.Serializable;
 
+/**
+ * Represents a student's training score for a specific academic period
+ */
 public class TrainingScore implements Serializable {
     private int scoreId;
     private String studentId;
@@ -10,6 +13,13 @@ public class TrainingScore implements Serializable {
     private double totalScore;
     private String ranking;
 
+    /**
+     * Constructor for TrainingScore
+     * @param scoreId Unique score ID
+     * @param studentId Student ID
+     * @param academicYear Academic year
+     * @param semester Semester number
+     */
     public TrainingScore(int scoreId, String studentId, String academicYear, int semester) {
         this.scoreId = scoreId;
         this.studentId = studentId;
@@ -18,6 +28,10 @@ public class TrainingScore implements Serializable {
         classifyRanking();
     }
 
+    /**
+     * Calculates total score based on activity points
+     * @param activityPoint Points from activities (max 50)
+     */
     public void calculateScore(double activityPoint) {
         double baseScore = 50;
         double activityScore = Math.min(activityPoint, 50);
@@ -25,6 +39,9 @@ public class TrainingScore implements Serializable {
         classifyRanking();
     }
 
+    /**
+     * Classifies ranking based on total score
+     */
     public void classifyRanking() {
         if (totalScore >= 90) ranking = "Excellent";
         else if (totalScore >= 80) ranking = "Good";
@@ -33,6 +50,9 @@ public class TrainingScore implements Serializable {
         else ranking = "Weak";
     }
 
+    /**
+     * Displays training score report
+     */
     public void getTrainingReport() {
         System.out.println("┌─────────────────────────────────────────────────────┐");
         System.out.println("│               TRAINING SCORE REPORT                 │");
