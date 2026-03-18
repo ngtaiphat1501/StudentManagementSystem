@@ -26,6 +26,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     public ActivityServiceImpl(StudentService studentService) {
         this.studentService = studentService;
+        this.activities = new ArrayList<>();
+        this.trainingScores = new ArrayList<>();
     }
 
     public List<Activity> getActivities() {
@@ -70,12 +72,28 @@ public class ActivityServiceImpl implements ActivityService {
 
     // dữ liệu tạm thời
     public void initializeSampleData() {
+        if (activities == null) {
+            activities = new ArrayList<>();
+        }
+        if (trainingScores == null) {
+            trainingScores = new ArrayList<>();
+        }
+        try {
+            java.util.Date now = new java.util.Date();
+            activities.add(new Activity(nextActivityId++, "CE200968", "The thao",
+                    "Giải bóng đá sinh viên", "Đoàn trường", now, now));
+            activities.add(new Activity(nextActivityId++, "CE200968", "Hoc thuat",
+                    "Olympic Tin học", "Khoa CNTT", now, now));
+            activities.add(new Activity(nextActivityId++, "CE200969", "Tinh Nguyen",
+                    "Hiến máu nhân đạo", "Hội sinh viên", now, now));
 
-        activities.add(new Activity(nextActivityId++, "ce200968", "The Thao", "World Cup", "Việt Nam", new Date(), new Date()));
-        activities.add(new Activity(nextActivityId++, "ce200968", "Hoc Thuat", "Code cùng bạn", "Tổ chức FCODER", new Date(), new Date()));
+            trainingScores.add(new TrainingScore(nextScoreId++, "CE200968", "2023-2024", 1));
+            trainingScores.add(new TrainingScore(nextScoreId++, "CE200969", "2023-2024", 1));
 
-        trainingScores.add(new TrainingScore(nextScoreId++, "ce200698", "2026", 1));
-        trainingScores.add(new TrainingScore(nextScoreId++, "ce200699", "2026", 1));
+            System.out.println("Đã tạo dữ liệu mẫu cho hoạt động");
+        } catch (Exception e) {
+            System.out.println("Lỗi tạo dữ liệu mẫu: " + e.getMessage());
+        }
     }
 
     // thêm hoạt động

@@ -100,7 +100,7 @@ public class AcademicServiceImpl implements AcademicService {
 
         }
         //kiểm tra có môn không
-        Course courses = findCourseById(studentId);
+        Course courses = findCourseByCourseId(studentId);
         if (courses == null) {
             System.out.println("Không tìm thấy môn học....");
             return false;
@@ -139,7 +139,7 @@ public class AcademicServiceImpl implements AcademicService {
         }
 
         // Cập nhật điểm vào môn học
-        Course course = findCourseById(courseId);
+        Course course = findCourseByCourseId(courseId);
         if (course != null) {
             course.setGrade(grade);
         }
@@ -190,29 +190,41 @@ public class AcademicServiceImpl implements AcademicService {
     //kiểm tra học vụ
     @Override
     public List<Student> checkAcademicWarning() {
-        ArrayList<Student> warningAcademic = new ArrayList<>();
-        ArrayList<Student> allStudent = (ArrayList<Student>) studentService.getAllStudents();
+        List<Student> warningAcademic = new ArrayList<>();
+        List<Student> allStudent = studentService.getAllStudents();
 
-        // xem điểm học sinh có GPA < 2 không
         for (Student student : allStudent) {
+            boolean hasWarning = false;
+
+            // Cảnh báo nếu GPA < 2.0
             if (student.getGpa() < 2.0) {
-                warningAcademic.add(student);
+                hasWarning = true;
             }
 
+            // Kiểm tra có môn nào điểm F không
             for (Course course : student.getRegisteredCourses()) {
                 if (course.getGrade() != null && course.getGrade().getLetterGrade().equals("F")) {
-                    if (warningAcademic != null) {
-                        warningAcademic.add(student);
-
-                    }
+                    hasWarning = true;
+                    break;  // Thoát vòng lặp khi tìm thấy môn F đầu tiên
                 }
+            }
 
-                break;
+            // Kiểm tra số tín chỉ nợ (nếu có nhiều môn F)
+            int failedCredits = 0;
+            for (Course course : student.getRegisteredCourses()) {
+                if (course.getGrade() != null && course.getGrade().getLetterGrade().equals("F")) {
+                    failedCredits += course.getCredits();
+                }
+            }
+            if (failedCredits >= 12) {  // Nợ >= 12 tín chỉ
+                hasWarning = true;
+            }
+
+            if (hasWarning && !warningAcademic.contains(student)) {
+                warningAcademic.add(student);
             }
         }
-
         return warningAcademic;
-
     }
 
     @Override
@@ -247,7 +259,7 @@ public class AcademicServiceImpl implements AcademicService {
         }
     }
 
-    public Course findCourseById(String Id) {
+    public Course findCourseByCourseId(String Id) {
 
         for (Course c : courses) {
             if (c.getCourseId().equals(Id)) {

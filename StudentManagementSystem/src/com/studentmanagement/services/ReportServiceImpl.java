@@ -83,7 +83,7 @@ public class ReportServiceImpl implements ReportService {
                 // Giả định GPA là hệ 4.0, ta quy đổi ra hệ 100: (GPA / 4.0) * 100
                 double score1 = ((s1.getGpa() / 4.0) * 100) * 0.7 + (s1.getTrainingScore() * 0.3);
                 double score2 = ((s2.getGpa() / 4.0) * 100) * 0.7 + (s2.getTrainingScore() * 0.3);
-                
+
                 // Sắp xếp giảm dần (từ cao xuống thấp)
                 return Double.compare(score2, score1);
             }
@@ -105,11 +105,17 @@ public class ReportServiceImpl implements ReportService {
 
         for (Student s : studentList) {
             double gpa = s.getGpa();
-            if (gpa >= 3.6) stats.put("Xuất sắc", stats.get("Xuất sắc") + 1);
-            else if (gpa >= 3.2) stats.put("Giỏi", stats.get("Giỏi") + 1);
-            else if (gpa >= 2.5) stats.put("Khá", stats.get("Khá") + 1);
-            else if (gpa >= 2.0) stats.put("Trung bình", stats.get("Trung bình") + 1);
-            else stats.put("Yếu", stats.get("Yếu") + 1);
+            if (gpa >= 3.6) {
+                stats.put("Xuất sắc", stats.get("Xuất sắc") + 1);
+            } else if (gpa >= 3.2) {
+                stats.put("Giỏi", stats.get("Giỏi") + 1);
+            } else if (gpa >= 2.5) {
+                stats.put("Khá", stats.get("Khá") + 1);
+            } else if (gpa >= 2.0) {
+                stats.put("Trung bình", stats.get("Trung bình") + 1);
+            } else {
+                stats.put("Yếu", stats.get("Yếu") + 1);
+            }
         }
         return stats;
     }
@@ -121,7 +127,7 @@ public class ReportServiceImpl implements ReportService {
         System.out.println("          BÁO CÁO TỔNG QUAN TOÀN TRƯỜNG       ");
         System.out.println("==============================================");
         System.out.println("Tổng số sinh viên: " + studentList.size());
-        
+
         Map<String, Integer> classification = getClassificationCount();
         System.out.println("\n--- Tỷ lệ xếp loại học tập ---");
         for (Map.Entry<String, Integer> entry : classification.entrySet()) {
@@ -133,14 +139,108 @@ public class ReportServiceImpl implements ReportService {
         List<Student> top10 = getTop10Students();
         for (int i = 0; i < top10.size(); i++) {
             Student s = top10.get(i);
-            System.out.printf("%d. %s - Lớp: %s - GPA: %.2f - RL: %.1f\n", 
-                    (i+1), s.getFullName(), s.getClassId(), s.getGpa(), s.getTrainingScore());
+            System.out.printf("%d. %s - Lớp: %s - GPA: %.2f - RL: %.1f\n",
+                    (i + 1), s.getFullName(), s.getClassId(), s.getGpa(), s.getTrainingScore());
         }
         System.out.println("==============================================\n");
     }
 
     @Override
     public void exportStatisticsReport(String filePath) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            java.io.FileWriter writer = new java.io.FileWriter(filePath);
+            java.io.PrintWriter printWriter = new java.io.PrintWriter(writer);
+
+            printWriter.println("==============================================");
+            printWriter.println("     BÁO CÁO THỐNG KÊ TOÀN TRƯỜNG");
+            printWriter.println("==============================================");
+            printWriter.println("Ngày xuất: " + new java.util.Date());
+            printWriter.println("Tổng số sinh viên: " + studentList.size());
+            printWriter.println();
+
+            // Thống kê xếp loại
+            java.util.Map<String, Integer> classification = getClassificationCount();
+            printWriter.println("--- XẾP LOẠI HỌC LỰC ---");
+            for (java.util.Map.Entry<String, Integer> entry : classification.entrySet()) {
+                double percentage = studentList.isEmpty() ? 0
+                        : (entry.getValue() * 100.0 / studentList.size());
+                printWriter.printf("%s: %d SV (%.1f%%)\n",
+                        entry.getKey(), entry.getValue(), percentage);
+            }
+            printWriter.println();
+
+            // Thống kê GPA
+            java.util.Map<String, Integer> gpaStats = getGPAStatistics();
+            printWriter.println("--- PHÂN PHỐI GPA ---");
+            for (java.util.Map.Entry<String, Integer> entry : gpaStats.entrySet()) {
+                double percentage = studentList.isEmpty() ? 0
+                        : (entry.getValue() * 100.0 / studentList.size());
+                printWriter.printf("%s: %d SV (%.1f%%)\n",
+                        entry.getKey(), entry.getValue(), percentage);
+            }
+            printWriter.println();
+
+            // Top 10 sinh viên
+            printWriter.println("--- TOP 10 SINH VIÊN XUẤT SẮC ---");
+            java.util.List<Student> top10 = getTop10Students();
+            for (int i = 0; i < top10.size(); i++) {
+                Student s = top10.get(i);
+                printWriter.printf("%d. %s - Lớp: %s - GPA: %.2f - RL: %.1f\n",
+                        i + 1, s.getFullName(), s.getClassId(), s.getGpa(), s.getTrainingScore());
+            }
+
+            printWriter.println("==============================================");
+            printWriter.close();
+
+            System.out.println("✅ Đã xuất báo cáo ra file: " + filePath);
+
+        } catch (java.io.IOException e) {
+            System.out.println("❌ Lỗi khi xuất file: " + e.getMessage());
+        }
+    }
+
+// Thêm method xuất báo cáo dạng CSV
+    public void exportToCSV(String filePath) {
+        try {
+            java.io.FileWriter writer = new java.io.FileWriter(filePath);
+            java.io.PrintWriter printWriter = new java.io.PrintWriter(writer);
+
+            // Header
+            printWriter.println("MSSV,Họ tên,Lớp,GPA,Điểm RL,Xếp loại");
+
+            // Data
+            for (Student s : studentList) {
+                printWriter.printf("%s,%s,%s,%.2f,%.1f,%s\n",
+                        s.getStudentId(),
+                        s.getFullName(),
+                        s.getClassId(),
+                        s.getGpa(),
+                        s.getTrainingScore(),
+                        getStudentRanking(s.getGpa())
+                );
+            }
+
+            printWriter.close();
+            System.out.println("✅ Đã xuất CSV ra file: " + filePath);
+
+        } catch (java.io.IOException e) {
+            System.out.println("❌ Lỗi khi xuất CSV: " + e.getMessage());
+        }
+    }
+
+    private String getStudentRanking(double gpa) {
+        if (gpa >= 3.6) {
+            return "Xuất sắc";
+        }
+        if (gpa >= 3.2) {
+            return "Giỏi";
+        }
+        if (gpa >= 2.5) {
+            return "Khá";
+        }
+        if (gpa >= 2.0) {
+            return "Trung bình";
+        }
+        return "Yếu";
     }
 }
