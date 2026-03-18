@@ -15,7 +15,6 @@ public class TrainingScore implements Serializable {
         this.studentId = studentId;
         this.academicYear = academicYear;
         this.semester = semester;
-       
         classifyRanking();
     }
 
@@ -27,27 +26,27 @@ public class TrainingScore implements Serializable {
     }
 
     public void classifyRanking() {
-        if (totalScore >= 90) ranking = "Xuất sắc";
-        else if (totalScore >= 80) ranking = "Tốt";
-        else if (totalScore >= 65) ranking = "Khá";
-        else if (totalScore >= 50) ranking = "Trung bình";
-        else ranking = "Yếu";
+        if (totalScore >= 90) ranking = "Excellent";
+        else if (totalScore >= 80) ranking = "Good";
+        else if (totalScore >= 65) ranking = "Average";
+        else if (totalScore >= 50) ranking = "Below Average";
+        else ranking = "Weak";
     }
 
     public void getTrainingReport() {
         System.out.println("┌─────────────────────────────────────────────────────┐");
-        System.out.println("│               BÁO CÁO ĐIỂM RÈN LUYỆN                │");
+        System.out.println("│               TRAINING SCORE REPORT                 │");
         System.out.println("├─────────────────────────────────────────────────────┤");
-        System.out.printf("│ %-15s: %-35s │\n", "Mã báo cáo", scoreId);
-        System.out.printf("│ %-15s: %-35s │\n", "Mã sinh viên", studentId);
-        System.out.printf("│ %-15s: %-35s │\n", "Năm học", academicYear);
-        System.out.printf("│ %-15s: %-35d │\n", "Học kỳ", semester);
-        System.out.printf("│ %-15s: %-35.1f │\n", "Tổng điểm", totalScore);
-        System.out.printf("│ %-15s: %-35s │\n", "Xếp loại", ranking);
+        System.out.printf("│ %-15s: %-35s │\n", "Report ID", scoreId);
+        System.out.printf("│ %-15s: %-35s │\n", "Student ID", studentId);
+        System.out.printf("│ %-15s: %-35s │\n", "Academic Year", academicYear);
+        System.out.printf("│ %-15s: %-35d │\n", "Semester", semester);
+        System.out.printf("│ %-15s: %-35.1f │\n", "Total Score", totalScore);
+        System.out.printf("│ %-15s: %-35s │\n", "Ranking", ranking);
         System.out.println("└─────────────────────────────────────────────────────┘");
     }
 
-    // Getter và Setter
+    // Getters and Setters
     public int getScoreId() { return scoreId; }
     public void setScoreId(int scoreId) { this.scoreId = scoreId; }
     public String getStudentId() { return studentId; }

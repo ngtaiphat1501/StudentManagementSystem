@@ -70,7 +70,7 @@ public class ActivityServiceImpl implements ActivityService {
         this.nextScoreId = nextScoreId;
     }
 
-    // dữ liệu tạm thời
+    // Sample data
     public void initializeSampleData() {
         if (activities == null) {
             activities = new ArrayList<>();
@@ -80,45 +80,51 @@ public class ActivityServiceImpl implements ActivityService {
         }
         try {
             java.util.Date now = new java.util.Date();
-            activities.add(new Activity(nextActivityId++, "CE200968", "The thao",
-                    "Giải bóng đá sinh viên", "Đoàn trường", now, now));
-            activities.add(new Activity(nextActivityId++, "CE200968", "Hoc thuat",
-                    "Olympic Tin học", "Khoa CNTT", now, now));
-            activities.add(new Activity(nextActivityId++, "CE200969", "Tinh Nguyen",
-                    "Hiến máu nhân đạo", "Hội sinh viên", now, now));
+
+            activities.add(new Activity(nextActivityId++, "CE200968", "Sports",
+                    "Student Football Tournament", "Youth Union", now, now, 10));
+
+            activities.add(new Activity(nextActivityId++, "CE200968", "Academic",
+                    "IT Olympiad", "IT Faculty", now, now, 15));
+
+            activities.add(new Activity(nextActivityId++, "CE200969", "Volunteer",
+                    "Blood Donation", "Student Association", now, now, 8));
 
             trainingScores.add(new TrainingScore(nextScoreId++, "CE200968", "2023-2024", 1));
             trainingScores.add(new TrainingScore(nextScoreId++, "CE200969", "2023-2024", 1));
 
-            System.out.println("Đã tạo dữ liệu mẫu cho hoạt động");
+            System.out.println("✅ Sample activity data created");
         } catch (Exception e) {
-            System.out.println("Lỗi tạo dữ liệu mẫu: " + e.getMessage());
+            System.out.println("❌ Error creating sample data: " + e.getMessage());
         }
     }
 
-    // thêm hoạt động
     @Override
-    public boolean addActivity(String studentId, String activityType, String activityName, String organization, Date startDate, Date endDate, int hourSpent) {
-        Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId); // ép kiểu tìm kiếm học sinh
-        if (student == null) {    // Kiểm tra sinh viên tồn tại
-            System.out.println("Không tìm thấy học sinh...");
+    public boolean addActivity(String studentId, String activityType, String activityName,
+            String organization, Date startDate, Date endDate, int hourSpent) {
+        Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
+        if (student == null) {
+            System.out.println("❌ Student not found...");
             return false;
         }
-        // Tạo hoạt động mới
-        Activity activity = new Activity(nextActivityId, studentId, activityType, activityName, organization, startDate, endDate);
 
-        activities.add(activity);
+        // Create new activity
+        Activity activity = new Activity(nextActivityId++, studentId, activityType,
+                activityName, organization, startDate, endDate, hourSpent);
         activity.setHourSpent(hourSpent);
         activity.setStartDate(startDate);
         activity.setEndDate(endDate);
-        System.out.print("Đã hoàn thành");
+        activity.setStatus("Completed");
 
-        // Thêm hoạt động vào sinh viên
+        // Calculate points based on hourSpent
+        activity.calculateTrainingScore();
+
+        activities.add(activity);
         student.addActivity(activity);
 
         calculateTrainingScore(studentId);
 
-        System.out.println("Thêm hoạt động thành công!");
+        System.out.println("✅ Activity added successfully!");
         activity.displayActivityInfo();
 
         return true;
@@ -131,15 +137,16 @@ public class ActivityServiceImpl implements ActivityService {
             return 0.0;
         }
 
-        // Tính tổng điểm từ các hoạt động
+        // Calculate total points from activities
         double totalPoints = 0;
         for (Activity activity : student.getActivities()) {
             totalPoints += activity.getPointEarned();
         }
 
-        // Cập nhật điểm rèn luyện cho sinh viên
+        // Update training score for student
         student.calculateTrainingScore();
-        // Cập nhật hoặc tạo TrainingScore
+        
+        // Update or create TrainingScore
         TrainingScore score = findTrainingScore(studentId, "2023-2024", 1);
         if (score == null) {
             score = new TrainingScore(nextScoreId++, studentId, "2023-2024", 1);
@@ -154,7 +161,7 @@ public class ActivityServiceImpl implements ActivityService {
     public String classifyTrainingRanking(String studentId) {
         TrainingScore score = findTrainingScore(studentId, "2023-2024", 1);
         if (score == null) {
-            return "Chưa xếp loại";
+            return "Not ranked";
         }
 
         Student student = ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
@@ -163,70 +170,68 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return score.getRanking();
-
     }
 
     @Override
     public List<Activity> getActivityReport(String StudentId) {
         List<Activity> studentActivities = new ArrayList<>();
 
-        for (Activity activtiy : activities) {
-            if (activtiy.getStudentId().equals(StudentId)) {
-                studentActivities.add(activtiy);
+        for (Activity activity : activities) {
+            if (activity.getStudentId().equals(StudentId)) {
+                studentActivities.add(activity);
             }
         }
 
         return studentActivities;
-
     }
 
     @Override
     public void exportTrainingReport() {
         System.out.println("\n╔══════════════════════════════════════════════╗");
-        System.out.println("║            BÁO CÁO RÈN LUYỆN                ║");
+        System.out.println("║            TRAINING REPORT                   ║");
         System.out.println("╚══════════════════════════════════════════════╝");
 
-        System.out.println("📊 Tổng số hoạt động: " + activities.size());
-        System.out.println("📊 Tổng số điểm rèn luyện: " + trainingScores.size());
+        System.out.println("📊 Total activities: " + activities.size());
+        System.out.println("📊 Total training scores: " + trainingScores.size());
 
-        // Thống kê xếp loại
+        // Classification statistics
         int excellent = 0, good = 0, average = 0, weak = 0;
         for (TrainingScore score : trainingScores) {
             switch (score.getRanking()) {
+                case "Excellent":
                 case "Xuất sắc":
                     excellent++;
                     break;
+                case "Good":
                 case "Tốt":
                     good++;
                     break;
+                case "Average":
                 case "Khá":
-                    average++;
-                    break;
                 case "Trung bình":
                     average++;
                     break;
+                case "Weak":
                 case "Yếu":
                     weak++;
                     break;
             }
         }
 
-        System.out.println("\n PHÂN LOẠI RÈN LUYỆN:");
-        System.out.println("Xuất sắc: " + excellent);
-        System.out.println("Tốt: " + good);
-        System.out.println("Khá/Trung bình: " + average);
-        System.out.println("Yếu: " + weak);
+        System.out.println("\n TRAINING CLASSIFICATION:");
+        System.out.println("Excellent: " + excellent);
+        System.out.println("Good: " + good);
+        System.out.println("Average: " + average);
+        System.out.println("Weak: " + weak);
     }
 
-    // tìm kiếm điểm rèn luyện
+    // Find training score
     public TrainingScore findTrainingScore(String studentId, String academicYear, int semester) {
         for (TrainingScore score : trainingScores) {
-            if (score.getStudentId().equals(studentId)) {
-                if (score.getAcademicYear().equals(academicYear)) {
-                    if (score.getSemester() == semester) {
-                        return score;
-                    }
-                }
+            if (score.getStudentId().equals(studentId)
+                    && score.getAcademicYear().equals(academicYear)
+                    && score.getSemester() == semester) {
+                return score;
             }
         }
         return null;

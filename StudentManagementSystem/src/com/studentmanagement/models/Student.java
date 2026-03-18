@@ -9,10 +9,10 @@ public class Student extends Person {
     private String studentId;
     private String classId;
     private Date enrollmentDate;
-    private String status; // "Đang học", "Đã tốt nghiệp", "Bảo lưu", "Thôi học"
+    private String status;
     private double gpa;
     private double trainingScore;
-    private String ranking; // Xếp loại rèn luyện
+    private String ranking;
     private List<Course> registeredCourses;
     private List<Activity> activities;
 
@@ -26,19 +26,19 @@ public class Student extends Person {
         this.status = status;
         this.gpa = 0.0;
         this.trainingScore = 0.0;
-        this.ranking = "Chưa xếp loại";
+        this.ranking = "Not ranked";
         this.registeredCourses = new ArrayList<>();
         this.activities = new ArrayList<>();
     }
 
     public void addRegisteredCourse(Course course) {
         registeredCourses.add(course);
-        calculateGPA(); // tự động tính lại GPA khi thêm khóa học
+        calculateGPA();
     }
 
     public void addActivity(Activity activity) {
         activities.add(activity);
-        calculateTrainingScore(); // tự động tính lại điểm rèn luyện
+        calculateTrainingScore();
     }
 
     public void calculateGPA() {
@@ -67,19 +67,18 @@ public class Student extends Person {
         for (Activity act : activities) {
             total += act.getPointEarned();
         }
-        this.trainingScore = Math.min(total, 100); // tối đa 100
+        this.trainingScore = Math.min(total, 100);
         updateRanking();
     }
 
     private void updateRanking() {
-        if (trainingScore >= 90) ranking = "Xuất sắc";
-        else if (trainingScore >= 80) ranking = "Tốt";
-        else if (trainingScore >= 65) ranking = "Khá";
-        else if (trainingScore >= 50) ranking = "Trung bình";
-        else ranking = "Yếu";
+        if (trainingScore >= 90) ranking = "Excellent";
+        else if (trainingScore >= 80) ranking = "Good";
+        else if (trainingScore >= 65) ranking = "Average";
+        else if (trainingScore >= 50) ranking = "Below Average";
+        else ranking = "Weak";
     }
 
-    // Getter và Setter
     public String getStudentId() { return studentId; }
     public void setStudentId(String studentId) { this.studentId = studentId; }
     public String getClassId() { return classId; }
@@ -103,21 +102,21 @@ public class Student extends Person {
     public void displayInfo() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("┌─────────────────────────────────────────────────────────────┐");
-        System.out.println("│                   THÔNG TIN SINH VIÊN                       │");
+        System.out.println("│                   STUDENT INFORMATION                       │");
         System.out.println("├─────────────────────────────────────────────────────────────┤");
-        System.out.printf("│ %-20s: %-40s │\n", "Mã sinh viên", studentId);
-        System.out.printf("│ %-20s: %-40s │\n", "Họ và tên", fullName);
-        System.out.printf("│ %-20s: %-40s │\n", "Ngày sinh", sdf.format(birthDate));
-        System.out.printf("│ %-20s: %-40s │\n", "Giới tính", gender);
-        System.out.printf("│ %-20s: %-40s │\n", "Lớp", classId);
-        System.out.printf("│ %-20s: %-40s │\n", "Ngày nhập học", sdf.format(enrollmentDate));
-        System.out.printf("│ %-20s: %-40s │\n", "Trạng thái", status);
+        System.out.printf("│ %-20s: %-40s │\n", "Student ID", studentId);
+        System.out.printf("│ %-20s: %-40s │\n", "Full Name", fullName);
+        System.out.printf("│ %-20s: %-40s │\n", "Birth Date", sdf.format(birthDate));
+        System.out.printf("│ %-20s: %-40s │\n", "Gender", gender);
+        System.out.printf("│ %-20s: %-40s │\n", "Class", classId);
+        System.out.printf("│ %-20s: %-40s │\n", "Enrollment Date", sdf.format(enrollmentDate));
+        System.out.printf("│ %-20s: %-40s │\n", "Status", status);
         System.out.printf("│ %-20s: %-40.2f │\n", "GPA", gpa);
-        System.out.printf("│ %-20s: %-40.1f │\n", "Điểm rèn luyện", trainingScore);
-        System.out.printf("│ %-20s: %-40s │\n", "Xếp loại", ranking);
+        System.out.printf("│ %-20s: %-40.1f │\n", "Training Score", trainingScore);
+        System.out.printf("│ %-20s: %-40s │\n", "Ranking", ranking);
         System.out.printf("│ %-20s: %-40s │\n", "Email", email);
-        System.out.printf("│ %-20s: %-40s │\n", "SĐT", phone);
-        System.out.printf("│ %-20s: %-40s │\n", "Địa chỉ", address);
+        System.out.printf("│ %-20s: %-40s │\n", "Phone", phone);
+        System.out.printf("│ %-20s: %-40s │\n", "Address", address);
         System.out.println("└─────────────────────────────────────────────────────────────┘");
     }
 }

@@ -13,7 +13,6 @@ public class ConsoleUtils {
                 System.out.flush();
             }
         } catch (Exception e) {
-            // In nhiều dòng trống nếu không clear được
             for (int i = 0; i < 50; i++) {
                 System.out.println();
             }
@@ -30,7 +29,6 @@ public class ConsoleUtils {
         System.out.println();
     }
 
-// Hàm thay thế cho repeat()
     public static String repeatChar(char c, int count) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
@@ -51,11 +49,11 @@ public class ConsoleUtils {
                 Thread.currentThread().interrupt();
             }
         }
-        System.out.println("\r✅ " + message + " hoàn thành!");
+        System.out.println("\r✅ " + message + " completed!");
     }
 
     public static void pressEnterToContinue(Scanner scanner) {
-        System.out.print("\n⏎ Nhấn Enter để tiếp tục...");
+        System.out.print("\n⏎ Press Enter to continue...");
         scanner.nextLine();
     }
 

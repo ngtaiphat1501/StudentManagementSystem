@@ -5,6 +5,7 @@ import com.studentmanagement.utils.ConsoleUtils;
 import java.util.Scanner;
 
 public class MainMenu {
+
     private Scanner scanner;
     private UserManager userManager;
     private StudentManager studentManager;
@@ -12,19 +13,20 @@ public class MainMenu {
     private AdminMenu adminMenu;
     private TeacherMenu teacherMenu;
     private StudentMenu studentMenu;
-    
+    private StaffMenu staffMenu;
+
     public MainMenu() {
         this.scanner = new Scanner(System.in);
         this.userManager = new UserManager();
         this.studentManager = new StudentManager();
         this.courseManager = new CourseManager();
     }
-    
+
     public void start() {
         while (true) {
             ConsoleUtils.clearScreen();
-            ConsoleUtils.showHeader("HỆ THỐNG QUẢN LÝ SINH VIÊN");
-            
+            ConsoleUtils.showHeader("STUDENT MANAGEMENT SYSTEM");
+
             if (userManager.getCurrentUser() == null) {
                 showLoginMenu();
             } else {
@@ -32,75 +34,90 @@ public class MainMenu {
             }
         }
     }
-    
+
     private void showLoginMenu() {
-        System.out.println("1. 🔐 Đăng nhập");
-        System.out.println("2. ❌ Thoát");
+        System.out.println("1. 🔐 Login");
+        System.out.println("2. ❌ Exit");
         System.out.println("═══════════════════════════════════════════");
-        System.out.print("Chọn: ");
-        
+        System.out.print("Choose: ");
+
         String choice = scanner.nextLine();
-        
+
         switch (choice) {
             case "1":
                 login();
                 break;
             case "2":
-                ConsoleUtils.showInfo("Cảm ơn bạn đã sử dụng hệ thống!");
+                ConsoleUtils.showInfo("Thank you for using the system!");
                 System.exit(0);
                 break;
             default:
-                ConsoleUtils.showError("Lựa chọn không hợp lệ!");
+                ConsoleUtils.showError("Invalid choice!");
                 ConsoleUtils.pressEnterToContinue(scanner);
         }
     }
-    
+
     private void login() {
-        ConsoleUtils.showHeader("ĐĂNG NHẬP HỆ THỐNG");
-        
-        System.out.print("Tên đăng nhập: ");
+        ConsoleUtils.showHeader("LOGIN");
+
+        System.out.print("Username: ");
         String username = scanner.nextLine();
-        
-        System.out.print("Mật khẩu: ");
+
+        System.out.print("Password: ");
         String password = scanner.nextLine();
-        
+
         if (userManager.login(username, password)) {
-            ConsoleUtils.showSuccess("Đăng nhập thành công!");
-            
-            // Khởi tạo menu theo role
+            ConsoleUtils.showSuccess("Login successful!");
+
             String role = userManager.getCurrentUser().getRole();
-            
+
             if (role.equalsIgnoreCase("ADMIN")) {
                 adminMenu = new AdminMenu(scanner, userManager, studentManager, courseManager);
             } else if (role.equalsIgnoreCase("TEACHER")) {
                 teacherMenu = new TeacherMenu(scanner, userManager, studentManager, courseManager);
             } else if (role.equalsIgnoreCase("STUDENT")) {
                 studentMenu = new StudentMenu(scanner, userManager, studentManager, courseManager);
+            } else if (role.equalsIgnoreCase("STAFF")) {
+                staffMenu = new StaffMenu(scanner, userManager, studentManager, courseManager);
             }
-            
+
             ConsoleUtils.pressEnterToContinue(scanner);
         } else {
-            ConsoleUtils.showError("Đăng nhập thất bại!");
+            ConsoleUtils.showError("Login failed!");
             ConsoleUtils.pressEnterToContinue(scanner);
         }
     }
-    
+
     private void showMainMenu() {
         String role = userManager.getCurrentUser().getRole();
-        
-        if (role.equalsIgnoreCase("ADMIN") && adminMenu != null) {
+
+        if (role.equalsIgnoreCase("ADMIN")) {
+            if (adminMenu == null) {
+                adminMenu = new AdminMenu(scanner, userManager, studentManager, courseManager);
+            }
             adminMenu.showMenu();
-        } else if (role.equalsIgnoreCase("TEACHER") && teacherMenu != null) {
+        } else if (role.equalsIgnoreCase("TEACHER")) {
+            if (teacherMenu == null) {
+                teacherMenu = new TeacherMenu(scanner, userManager, studentManager, courseManager);
+            }
             teacherMenu.showMenu();
-        } else if (role.equalsIgnoreCase("STUDENT") && studentMenu != null) {
+        } else if (role.equalsIgnoreCase("STUDENT")) {
+            if (studentMenu == null) {
+                studentMenu = new StudentMenu(scanner, userManager, studentManager, courseManager);
+            }
             studentMenu.showMenu();
+        } else if (role.equalsIgnoreCase("STAFF")) {
+            if (staffMenu == null) {
+                staffMenu = new StaffMenu(scanner, userManager, studentManager, courseManager);
+            }
+            staffMenu.showMenu();
         } else {
-            System.out.println("❌ Lỗi: Không xác định được role hoặc menu!");
+            System.out.println("❌ Error: Role or menu not determined!");
             userManager.logout();
             ConsoleUtils.pressEnterToContinue(scanner);
         }
     }
-    
+
     public static void main(String[] args) {
         new MainMenu().start();
     }

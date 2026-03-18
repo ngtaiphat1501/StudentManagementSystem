@@ -7,6 +7,8 @@ import com.studentmanagement.utils.ConsoleUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 public class StudentManager {
 
@@ -14,7 +16,6 @@ public class StudentManager {
     private FileService fileService;
     private List<ClassEntity> classes;
 
-    // contructor
     public StudentManager() {
         this.studentService = new StudentServiceImpl();
         this.fileService = new FileServiceImpl();
@@ -23,42 +24,53 @@ public class StudentManager {
     }
 
     public List<Student> getStudents() {
-        return studentService.getAllStudents(); // ✅ Gọi từ StudentService
+        return studentService.getAllStudents();
     }
 
     private void initializeSampleClasses() {
         List<Student> students = studentService.getAllStudents();
-        classes.add(new ClassEntity("K17CNTTA", "Công nghệ thông tin A", "CNTT", "2025", "GV. Ngach", students.size(), students));
-        classes.add(new ClassEntity("K17QTKD", "Quản trị kinh doanh", "QTKD", "2025", "GV. Tham", students.size(), students));
+        classes.add(new ClassEntity("K17CNTTA", "Information Technology A", "IT", "2025", "Mr. Ngach", students.size(), students));
+        classes.add(new ClassEntity("K17QTKD", "Business Administration", "BA", "2025", "Mr. Tham", students.size(), students));
     }
-    // goi studentservice 
 
     public void addStudent(Scanner scanner) {
         studentService.addStudent(scanner);
     }
-    // goi studentservice 
 
     public void updateStudent(Scanner scanner) {
-        System.out.print("Nhập mã sinh viên cần sửa: ");
+        System.out.print("Enter student ID to update: ");
         String studentId = scanner.nextLine();
         studentService.updateStudent(studentId, scanner);
     }
-    // goi studentservice 
 
     public void deleteStudent(Scanner scanner) {
-        System.out.print("Nhập mã sinh viên cần xóa: ");
+        System.out.print("Enter student ID to delete: ");
         String studentId = scanner.nextLine();
-        if (studentService.deleteStudent(studentId)) {
-            System.out.println(" Xóa sinh viên thành công!");
+        
+        Student student = findStudentByStudentId(studentId);
+        if (student == null) {
+            System.out.println("❌ Student not found!");
+            return;
+        }
+        
+        student.displayInfo();
+        System.out.print("Are you sure you want to delete? (y/n): ");
+        String confirm = scanner.nextLine();
+        
+        if (confirm.equalsIgnoreCase("y")) {
+            if (studentService.deleteStudent(studentId)) {
+                System.out.println("✅ Student deleted successfully!");
+            } else {
+                System.out.println("❌ Failed to delete student!");
+            }
         } else {
-            System.out.println("Không tìm thấy sinh viên!");
+            System.out.println("Delete cancelled!");
         }
     }
-    // goi studentservice 
 
     public void searchStudent(Scanner scanner) {
-        System.out.println("Tìm kiếm theo: 1-ID, 2-Tên, 3-Lớp, 4-Email");
-        System.out.print("Chọn: ");
+        System.out.println("Search by: 1-ID, 2-Name, 3-Class, 4-Email");
+        System.out.print("Choose: ");
         String choice = scanner.nextLine();
         String type;
         switch (choice) {
@@ -75,16 +87,16 @@ public class StudentManager {
                 type = "email";
                 break;
             default:
-                System.out.println("Lựa chọn không hợp lệ!");
+                System.out.println("Invalid choice!");
                 return;
         }
-        System.out.print("Nhập từ khóa: ");
+        System.out.print("Enter keyword: ");
         String keyword = scanner.nextLine();
         List<Student> results = studentService.searchStudent(type, keyword);
         if (results.isEmpty()) {
-            System.out.println("Không tìm thấy sinh viên nào.");
+            System.out.println("No students found.");
         } else {
-            System.out.println("\nKẾT QUẢ TÌM KIẾM:");
+            System.out.println("\nSEARCH RESULTS:");
             for (Student s : results) {
                 s.displayInfo();
             }
@@ -94,7 +106,7 @@ public class StudentManager {
     public void displayAllStudents() {
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()) {
-            System.out.println("Chưa có sinh viên nào.");
+            System.out.println("No students yet.");
         } else {
             for (Student s : students) {
                 s.displayInfo();
@@ -104,5 +116,38 @@ public class StudentManager {
 
     public Student findStudentByStudentId(String studentId) {
         return ((StudentServiceImpl) studentService).findStudentByStudentId(studentId);
+    }
+    
+    public Student findStudentByEmail(String email) {
+        for (Student s : studentService.getAllStudents()) {
+            if (s.getEmail() != null && s.getEmail().equalsIgnoreCase(email)) {
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    public Student findStudentByName(String name) {
+        String normalizedName = removeAccent(name.toLowerCase());
+        for (Student s : studentService.getAllStudents()) {
+            if (s.getFullName() != null && 
+                removeAccent(s.getFullName().toLowerCase()).contains(normalizedName)) {
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    private String removeAccent(String str) {
+        if (str == null) return "";
+        try {
+            String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("")
+                   .replace('đ', 'd')
+                   .replace('Đ', 'D');
+        } catch (Exception e) {
+            return str;
+        }
     }
 }

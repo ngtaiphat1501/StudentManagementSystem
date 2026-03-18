@@ -1,4 +1,4 @@
-//Khanh
+// Khanh
 package com.studentmanagement.models;
 
 import java.io.Serializable;
@@ -24,8 +24,8 @@ public class Grade implements Serializable {
         this.attendanceScore = attendanceScore;
         this.midtermScore = midtermScore;
         this.finalScore = finalScore;
-        this.totalScore = totalScore;
-
+        calculateTotalScore();
+        calculateLetterGrade();
     }
 
     public int getGradeId() {
@@ -97,12 +97,11 @@ public class Grade implements Serializable {
 
         calculateTotalScore();
         calculateLetterGrade();
-        System.out.println("Nhập điểm thành công!");
+        System.out.println("Grade entry successful!");
     }
 
     public void calculateTotalScore() {
         totalScore = attendanceScore * 0.1 + midtermScore * 0.3 + finalScore * 0.6;
-
     }
 
     public void calculateLetterGrade() {
@@ -126,34 +125,34 @@ public class Grade implements Serializable {
     }
 
     public void displayGradeInfo() {
-        System.out.printf("│ %-15s: %-35.1f │\n", "Điểm chuyên cần", attendanceScore);
-        System.out.printf("│ %-15s: %-35.1f │\n", "Điểm giữa kỳ", midtermScore);
-        System.out.printf("│ %-15s: %-35.1f │\n", "Điểm cuối kỳ", finalScore);
-        System.out.printf("│ %-15s: %-35.1f │\n", "Điểm tổng kết", totalScore);
-        System.out.printf("│ %-15s: %-35s │\n", "Điểm chữ", letterGrade);
-        System.out.printf("│ %-15s: %-35s │\n", "Xếp loại", getGradeText());
+        System.out.printf("│ %-15s: %-35.1f │\n", "Attendance", attendanceScore);
+        System.out.printf("│ %-15s: %-35.1f │\n", "Midterm", midtermScore);
+        System.out.printf("│ %-15s: %-35.1f │\n", "Final", finalScore);
+        System.out.printf("│ %-15s: %-35.1f │\n", "Total Score", totalScore);
+        System.out.printf("│ %-15s: %-35s │\n", "Letter Grade", letterGrade);
+        System.out.printf("│ %-15s: %-35s │\n", "Classification", getGradeText());
     }
 
     public String getGradeText() {
         switch (letterGrade) {
             case "A":
-                return "Xuất sắc";
+                return "Excellent";
             case "B+":
-                return "Giỏi";
+                return "Very Good";
             case "B":
-                return "Khá";
+                return "Good";
             case "C+":
-                return "Trung bình khá";
+                return "Above Average";
             case "C":
-                return "Trung bình";
+                return "Average";
             case "D+":
-                return "Trung bình yếu";
+                return "Below Average";
             case "D":
-                return "Yếu";
+                return "Poor";
             case "F":
-                return "Kém";
+                return "Fail";
             default:
-                return "Chưa có điểm";
+                return "No Grade";
         }
     }
 

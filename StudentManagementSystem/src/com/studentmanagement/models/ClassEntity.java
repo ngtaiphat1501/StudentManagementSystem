@@ -1,4 +1,4 @@
-//(Khánh)
+//(Khanh)
 package com.studentmanagement.models;
 
 import java.io.Serializable;
@@ -84,25 +84,23 @@ public class ClassEntity implements Serializable {
         this.students = students;
     }
 
-    // thêm học sinh 
+    // Add student
     public void addStudent(Student student) {
         System.out.println("Add Student: " + student.getFullName());
         students.add(student);
     }
 
-    //xóa học sinh
+    // Remove student
     public boolean removeStudent(String studentId) {
         for (int i = 0; i < students.size(); i++) {
             Student s = students.get(i);
-            System.out.println("===Danh sách học sinh=== \n " + "Id: " + s.getId() + ", " + " Name: " + s.getFullName() + "\n");
+            System.out.println("===Student list=== \n " + "Id: " + s.getId() + ", " + " Name: " + s.getFullName() + "\n");
             if (s.getId().equals(studentId)) {
-                students.remove(i);  //  Xóa theo index
+                students.remove(i);
                 System.out.println("Remove Student: " + studentId);
                 return true;
             }
         }
         return false;
     }
-
-    // + calculateStatistics(): ClassStatistics                                                        
 }

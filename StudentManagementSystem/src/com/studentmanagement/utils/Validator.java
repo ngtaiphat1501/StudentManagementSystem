@@ -4,15 +4,12 @@ import java.util.regex.Pattern;
 
 public class Validator {
     
-    // Email pattern
     private static final Pattern EMAIL_PATTERN = 
         Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     
-    // Phone pattern (Việt Nam)
     private static final Pattern PHONE_PATTERN = 
         Pattern.compile("^(0|\\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$");
     
-    // Student ID pattern (CE + 6 số)
     private static final Pattern STUDENT_ID_PATTERN = 
         Pattern.compile("^CE\\d{6}$");
     

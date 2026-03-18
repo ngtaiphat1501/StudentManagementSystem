@@ -4,26 +4,20 @@ import java.io.Serializable;
 
 public class Course implements Serializable {
     
-    // Đánh dấu phiên bản để lưu file không bị lỗi
     private static final long serialVersionUID = 1L;
 
-    // --- CÁC THUỘC TÍNH (Theo đúng sơ đồ) ---
-    private String courseId;        // Mã môn học
-    private String courseName;      // Tên môn học
-    private int credits;            // Số tín chỉ
-    private String departmentId;    // Mã khoa
-    private int semester;           // Học kỳ (kiểu int theo sơ đồ)
-    private String academicYear;    // Năm học
-    private String teacher;         // Giảng viên
-    private Grade grade;            // Điểm số của môn học (liên kết với class Grade)
+    private String courseId;
+    private String courseName;
+    private int credits;
+    private String departmentId;
+    private int semester;
+    private String academicYear;
+    private String teacher;
+    private Grade grade;
 
-    // --- CONSTRUCTORS ---
-    
-    // Constructor rỗng (Rất cần thiết khi đọc/ghi file hoặc dùng v��i các framework)
     public Course() {
     }
 
-    // Constructor có tham số (Không bao gồm Grade vì điểm thường được cập nhật sau)
     public Course(String courseId, String courseName, int credits, String departmentId, 
                   int semester, String academicYear, String teacher) {
         this.courseId = courseId;
@@ -103,24 +97,18 @@ public class Course implements Serializable {
         this.grade = grade;
     }
     
-
-    // --- CÁC PHƯƠNG THỨC (Theo đúng sơ đồ) ---
-
-    // Hàm mô phỏng việc đăng ký môn học
     public void register() {
-        System.out.println("Đang xử lý đăng ký môn học: " + this.courseName + " (" + this.courseId + ")");
+        System.out.println("Processing course registration: " + this.courseName + " (" + this.courseId + ")");
     }
 
-    // Hàm hiển thị thông tin môn học
     public void displayInfo() {
         System.out.println("--------------------------------------------------");
-        System.out.println("Mã môn học : " + this.courseId);
-        System.out.println("Tên môn học: " + this.courseName);
-        System.out.println("Số tín chỉ : " + this.credits);
-        System.out.println("Mã khoa    : " + this.departmentId);
-        System.out.println("Học kỳ     : " + this.semester + " | Năm học: " + this.academicYear);
-        System.out.println("Giảng viên : " + this.teacher);
+        System.out.println("Course ID    : " + this.courseId);
+        System.out.println("Course Name  : " + this.courseName);
+        System.out.println("Credits      : " + this.credits);
+        System.out.println("Department   : " + this.departmentId);
+        System.out.println("Semester     : " + this.semester + " | Academic Year: " + this.academicYear);
+        System.out.println("Teacher      : " + this.teacher);
         System.out.println("--------------------------------------------------");
     }
-    
 }

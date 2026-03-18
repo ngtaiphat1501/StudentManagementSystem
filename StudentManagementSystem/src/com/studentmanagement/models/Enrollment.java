@@ -1,4 +1,4 @@
-//Nhans
+// Nhans
 package com.studentmanagement.models;
 
 import java.io.Serializable;
@@ -11,7 +11,7 @@ public class Enrollment implements Serializable {
     private String semester;
     private String academicYear;
     private Date registrationDate;
-    private String status; // "Đã đăng ký", "Đã hủy", "Hoàn thành"
+    private String status; // "Registered", "Cancelled", "Completed"
     
     public Enrollment(int enrollmentId, String studentId, String courseId, 
                      String semester, String academicYear) {
@@ -21,42 +21,38 @@ public class Enrollment implements Serializable {
         this.semester = semester;
         this.academicYear = academicYear;
         this.registrationDate = new Date();
-        this.status = "Đã đăng ký";
+        this.status = "Registered";
     }
     
-    // Đăng ký môn học
     public void register() {
-        status = "Đã đăng ký";
-        System.out.println("Đăng ký môn học thành công!");
+        status = "Registered";
+        System.out.println("Course registration successful!");
     }
     
-    // Hủy đăng ký
     public void dropCourse() {
-        status = "Đã hủy";
-        System.out.println("Đã hủy đăng ký môn học!");
+        status = "Cancelled";
+        System.out.println("Course registration cancelled!");
     }
     
-    // Đánh dấu hoàn thành
     public void markCompleted() {
-        status = "Hoàn thành";
+        status = "Completed";
     }
     
-    // Hiển thị thông tin đăng ký
     public void displayEnrollmentInfo() {
         System.out.println("┌─────────────────────────────────────────────────────┐");
-        System.out.println("│                THÔNG TIN ĐĂNG KÝ                    │");
+        System.out.println("│                ENROLLMENT INFORMATION               │");
         System.out.println("├─────────────────────────────────────────────────────┤");
-        System.out.printf("│ %-15s: %-35s │\n", "Mã đăng ký", enrollmentId);
-        System.out.printf("│ %-15s: %-35s │\n", "Mã sinh viên", studentId);
-        System.out.printf("│ %-15s: %-35s │\n", "Mã môn học", courseId);
-        System.out.printf("│ %-15s: %-35s │\n", "Học kỳ", semester);
-        System.out.printf("│ %-15s: %-35s │\n", "Năm học", academicYear);
-        System.out.printf("│ %-15s: %-35s │\n", "Trạng thái", status);
-        System.out.printf("│ %-15s: %-35s │\n", "Ngày đăng ký", registrationDate);
+        System.out.printf("│ %-15s: %-35s │\n", "Enrollment ID", enrollmentId);
+        System.out.printf("│ %-15s: %-35s │\n", "Student ID", studentId);
+        System.out.printf("│ %-15s: %-35s │\n", "Course ID", courseId);
+        System.out.printf("│ %-15s: %-35s │\n", "Semester", semester);
+        System.out.printf("│ %-15s: %-35s │\n", "Academic Year", academicYear);
+        System.out.printf("│ %-15s: %-35s │\n", "Status", status);
+        System.out.printf("│ %-15s: %-35s │\n", "Registration Date", registrationDate);
         System.out.println("└─────────────────────────────────────────────────────┘");
     }
     
-    // Getter và Setter
+    // Getters and Setters
     public int getEnrollmentId() { return enrollmentId; }
     public void setEnrollmentId(int enrollmentId) { this.enrollmentId = enrollmentId; }
     

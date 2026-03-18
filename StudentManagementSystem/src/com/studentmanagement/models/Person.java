@@ -26,7 +26,7 @@ public abstract class Person implements Serializable {
     
     public abstract void displayInfo();
     
-    // Getter và Setter
+    // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     

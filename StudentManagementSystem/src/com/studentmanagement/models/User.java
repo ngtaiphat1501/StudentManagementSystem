@@ -1,12 +1,8 @@
-//Khánh
+// Khanh
 package com.studentmanagement.models;
 
 import java.io.Serializable;
 
-/**
- *
- * @author TUF GAMING
- */
 public class User implements Serializable  {
     private String username;
     private String password;
@@ -23,13 +19,11 @@ public class User implements Serializable  {
     }
     
     public boolean checkPassword(String password){
-        
-        
-        return this.password.equals(password); // xem đúng pass 
+        return this.password.equals(password);
     }
     
     public boolean isAdmin(){
-         return role.equalsIgnoreCase("admin"); // so sánh chọn quyền nào không quan tâm hoa hay thường
+         return role.equalsIgnoreCase("admin");
     }
     public boolean isStaff(){
          return role.equalsIgnoreCase("staff");
@@ -81,6 +75,4 @@ public class User implements Serializable  {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
 }
