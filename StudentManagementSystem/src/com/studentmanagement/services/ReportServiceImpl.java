@@ -8,8 +8,6 @@ import java.util.*;
 
 public class ReportServiceImpl implements ReportService {
 
-    // Giả sử sau này bạn sẽ có StudentService chứa danh sách sinh viên.
-    // Ở đây mình dùng một List giả lập để code chạy được thật sự và không bị lỗi.
     private List<Student> studentList;
 
     // Constructor tạm thời truyền thẳng List Sinh viên vào để test
