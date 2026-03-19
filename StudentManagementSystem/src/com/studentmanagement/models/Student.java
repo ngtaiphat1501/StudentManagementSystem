@@ -69,24 +69,52 @@ public class Student extends Person {
     /**
      * Calculates GPA based on registered courses with grades
      */
+        /**
+     * Calculates GPA based on registered courses with grades.
+     * Converts course letter grades to a 4.0 scale before calculating the weighted average.
+     */
     public void calculateGPA() {
         if (registeredCourses.isEmpty()) {
             gpa = 0.0;
             return;
         }
+        
         double totalWeightedScore = 0;
         int totalCredits = 0;
+        
         for (Course course : registeredCourses) {
             Grade grade = course.getGrade();
-            if (grade != null) {
-                totalWeightedScore += grade.getTotalScore() * course.getCredits();
+            if (grade != null && grade.getLetterGrade() != null) {
+                // Convert the course's letter grade to a 4.0 scale
+                double point4 = convertTo4PointScale(grade.getLetterGrade());
+                
+                totalWeightedScore += point4 * course.getCredits();
                 totalCredits += course.getCredits();
             }
         }
+        
         if (totalCredits > 0) {
             gpa = totalWeightedScore / totalCredits;
         } else {
             gpa = 0.0;
+        }
+    }
+
+    /**
+     * Helper method: Converts a Letter Grade to a 4.0 Scale (University Standard).
+     * @param letterGrade The letter grade received in the course (e.g., "A", "B+")
+     * @return The equivalent score on a 4.0 scale
+     */
+    private double convertTo4PointScale(String letterGrade) {
+        switch (letterGrade) {
+            case "A": return 4.0;
+            case "B+": return 3.5;
+            case "B": return 3.0;
+            case "C+": return 2.5;
+            case "C": return 2.0;
+            case "D+": return 1.5;
+            case "D": return 1.0;
+            default: return 0.0; // F (Fail)
         }
     }
 
